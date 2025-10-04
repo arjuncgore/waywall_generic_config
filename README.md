@@ -17,3 +17,13 @@ Setup: (the bash commands may not work)
 - Edit the `<username>` in `nb_path` and `overlay_path` in `init.lua` to your pc's username (lines 9, 10)
 
 let me (or anyone else) know if you need any help
+
+
+use these values as a default for 1440p
+```lua
+local e_count = 		{ enabled = true, x = 1500, y = 400, size = 7} 
+local thin_pie = 		{ enabled = true, x = 1490, y = 645, size = 1} 
+local thin_percent =	{ enabled = true, x = 1568, y = 1050, size = 8} 
+local tall_pie = 		{ enabled = true, x = 1490, y = 645, size = 1} -- Leave same as thin for seamlessness
+local tall_percent =	{ enabled = true, x = 1568, y = 1050, size = 8} -- Leave same as thin for seamlessness
+```
