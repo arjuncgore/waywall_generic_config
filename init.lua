@@ -30,7 +30,7 @@ local remaps_text_config = { text = "", x = 100, y = 100, size = 2}
 -- DON'T CHANGE ANYTHING AFTER THIS UNLESS YOU KNOW WHAT YOU"RE DOING
 
 local waywall_config_path = os.getenv("HOME") .. "/.config/waywall/"
-local bg_path = waywall_config_path .. 	"resources/waywall_background.png"
+local bg_path = waywall_config_path .. 	"resources/background.png"
 
 local pacem_path = 		waywall_config_path .. 	"resources/paceman-tracker-0.7.0.jar"
 local nb_path = 		waywall_config_path ..	"resources/Ninjabrain-Bot-1.5.1.jar"
