@@ -14,6 +14,7 @@ Features:
 
 Setup: (the bash commands may not work)
 - Clone the repository to your waywall config folder
+
 ```git clone https://github.com/arjuncgore/waywall_generic_config.git ~/.config/waywall```
 
 let me (or anyone else) know if you need any help
