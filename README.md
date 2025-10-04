@@ -12,10 +12,10 @@ Features:
 - Toggleable remaps
 - Coupled ninbot and paceman
 
-Setup: (the bash commands may not work)
-- Clone the repository to your waywall config folder
-
+Setup:
 ```git clone https://github.com/arjuncgore/waywall_generic_config.git ~/.config/waywall```
+
+(clones this repository to your waywall config folder)
 
 let me (or anyone else) know if you need any help
 
