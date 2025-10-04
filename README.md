@@ -17,7 +17,7 @@ Setup:
 
 (clones this repository to your waywall config folder)
 
-let me (or anyone else) know if you need any help
+
 
 
 use these values as a default for 1440p
