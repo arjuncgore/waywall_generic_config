@@ -9,11 +9,11 @@ local ninbot_opacity = 1 -- 0 to 1
 
 local res_1440 = false
 
-local e_count = 		{ enabled = true, x = 1340, y = 300, size = 4, colorkey = true} 
-local thin_pie = 		{ enabled = true, x = 1250, y = 500, size = 3, colorkey = true} 
-local thin_percent =	{ enabled = true, x = 1300, y = 850, size = 6, colorkey = true} 
-local tall_pie = 		{ enabled = true, x = 1250, y = 500, size = 3, colorkey = true} -- Leave same as thin for seamlessness
-local tall_percent =	{ enabled = true, x = 1300, y = 850, size = 6, colorkey = true} -- Leave same as thin for seamlessness
+local e_count = 		{ enabled = true, x = 1340, y = 300, size = 5, colorkey = true} 
+local thin_pie = 		{ enabled = true, x = 1250, y = 500, size = 4, colorkey = true} 
+local thin_percent =	{ enabled = true, x = 1300, y = 850, size = 6} 
+local tall_pie = 		{ enabled = true, x = 1250, y = 500, size = 4, colorkey = true} -- Leave same as thin for seamlessness
+local tall_percent =	{ enabled = true, x = 1300, y = 850, size = 6} -- Leave same as thin for seamlessness
 
 local toggle_paceman = false
 
@@ -117,15 +117,14 @@ local mirrors = {
 		color_key = e_count.colorkey and {
 			input = "#dddddd",
 			output = primary_col,
-		} or {},
+		} or  nil,
 	}),
-	
 
 
     thin_pie_all = make_mirror({
 		src = res_1440
-    		and { x = 10, y = 694, w = 340, h = 210 }
-    		or  { x = 0,  y = 674, w = 340, h = 210 },
+    		and { x = 10, y = 694, w = 340, h = 221 }
+    		or  { x = 0,  y = 674, w = 340, h = 221 },
 		dst = { x = thin_pie.x, y = thin_pie.y, w = 420*thin_pie.size/4, h = 273*thin_pie.size/4 },
     }),
 
