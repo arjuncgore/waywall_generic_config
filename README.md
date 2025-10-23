@@ -1,5 +1,8 @@
 # Waywall-generic-config
 
+## Credits:
+Thank you so much to @dariasc for producing a config that slowly evolved into this config!
+
 ## Features:
 - Configurable colors for mirrors and background
 - Configurable ninbot position and opacity
@@ -12,7 +15,7 @@
 ```bash
 git clone https://github.com/arjuncgore/waywall_generic_config.git ~/.config/waywall
 ```
-This lones this repository directly to your waywall config folder
+This clones this repository directly to your waywall config folder
 
 ## Configuration:
 Just edit `remaps.lua` and the first few lines in `init.lua` for what you want, I'll probably make it easier to configure in the future tho.
