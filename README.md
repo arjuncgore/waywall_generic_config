@@ -1,7 +1,7 @@
 # Waywall-generic-config
 
 ## Credits:
-Thank you so much to @dariasc for producing a config that slowly evolved into this config!
+Thank you so much to @dariasc on discord for producing a config that slowly evolved into this config!
 
 ## Features:
 - Configurable colors for mirrors and background
