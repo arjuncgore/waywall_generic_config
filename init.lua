@@ -7,7 +7,7 @@ local secondary_col = "#E446C4"
 local ninbot_anchor = "topright" -- topleft, top, topright, left, right, bottomleft, bottomright
 local ninbot_opacity = 1         -- 0 to 1
 
-local res_1440 = true
+local res_1440 = false
 
 -- ==== MIRRORS ====
 local e_count = { enabled = true, x = 1340, y = 300, size = 5, colorkey = true }
