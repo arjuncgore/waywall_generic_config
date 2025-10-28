@@ -31,6 +31,7 @@ local toggle_remaps_key = "Insert"
 -- ==== MISC ====
 local toggle_paceman = false
 local remaps_text_config = { text = "rebinds off", x = 100, y = 100, size = 2 }
+local enable_resize_animation = true
 
 -- ==== END OF CONFIG ====
 
@@ -67,7 +68,7 @@ local config = {
         debug = false,
         jit = false,
         tearing = false,
-		scene_add_text = true,
+        scene_add_text = true,
     },
 }
 
@@ -397,7 +398,27 @@ local make_res = function(width, height, enable, disable)
         end
     end
 end
+local make_res = function(width, height, enable, disable)
+    return function()
+        local active_width, active_height = waywall.active_res()
 
+        if active_width == width and active_height == height then
+            if enable_resize_animation then
+                os.execute('echo "0x0" > ~/.resetti_state')
+                waywall.sleep(17)
+            end
+            waywall.set_resolution(0, 0)
+            disable()
+        else
+            if enable_resize_animation then
+                os.execute(string.format('echo "%dx%d" > ~/.resetti_state', width, height))
+                waywall.sleep(17)
+            end
+            waywall.set_resolution(width, height)
+            enable()
+        end
+    end
+end
 
 local resolutions = {
     thin = make_res(res_1440 and 350 or 340, res_1440 and 1100 or 1080, thin_enable, res_disable),
