@@ -11,7 +11,7 @@ local res_1440 = false
 
 -- ==== MIRRORS ====
 local e_count = { enabled = true, x = 1340, y = 300, size = 5, colorkey = true }
-local thin_pie = { enabled = true, x = 1250, y = 500, size = 4, colorkey = true }
+local thin_pie = { enabled = true, x = 1250, y = 500, size = 4, colorkey = true } -- Turning off colorkeying also maintains the original pie chart's dimensions and shows the percentages
 local thin_percent = { enabled = true, x = 1300, y = 850, size = 6 }
 local tall_pie = { enabled = true, x = 1250, y = 500, size = 4, colorkey = true } -- Leave same as thin for seamlessness
 local tall_percent = { enabled = true, x = 1300, y = 850, size = 6 }              -- Leave same as thin for seamlessness
@@ -335,12 +335,8 @@ local show_mirrors = function(eye, f3, tall, thin)
     end
 
     if thin_percent.enabled then
-        if thin_percent.colorkey then
-            mirrors.thin_percent_blockentities(thin)
-            mirrors.thin_percent_unspecified(thin)
-        else
-            -- mirrors.thin_percent_all(thin)
-        end
+        mirrors.thin_percent_blockentities(thin)
+        mirrors.thin_percent_unspecified(thin)
     end
 
     if tall_pie.enabled then
@@ -356,12 +352,8 @@ local show_mirrors = function(eye, f3, tall, thin)
     end
 
     if tall_percent.enabled then
-        if tall_percent.colorkey then
-            mirrors.tall_percent_blockentities(tall)
-            mirrors.tall_percent_unspecified(tall)
-        else
-            -- mirrors.tall_percent_all(tall)
-        end
+        mirrors.tall_percent_blockentities(tall)
+        mirrors.tall_percent_unspecified(tall)
     end
 end
 
