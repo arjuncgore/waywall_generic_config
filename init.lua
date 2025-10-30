@@ -67,7 +67,7 @@ local config = {
         debug = false,
         jit = false,
         tearing = false,
-		scene_add_text = true,
+        scene_add_text = true,
     },
 }
 
@@ -117,8 +117,8 @@ end
 
 local mirrors = {
     e_counter = make_mirror({
-        src = { x = 13, y = 37, w = 37, h = 9 },
-        dst = { x = e_count.x, y = e_count.y, w = 37 * e_count.size, h = 9 * e_count.size },
+        src = { x = 1, y = 28, w = 49, h = 18 },
+        dst = { x = e_count.x, y = e_count.y, w = 49 * e_count.size, h = 18 * e_count.size },
         color_key = e_count.colorkey and {
             input = "#dddddd",
             output = primary_col,
