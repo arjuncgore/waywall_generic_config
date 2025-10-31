@@ -10,6 +10,9 @@ Thank you so much to @dariasc on discord for producing a config that slowly evol
 - Configurable hotkeys for resolution changes and ninjabrain bot visibility
 - Toggleable and configurable keyboard remaps
 - Coupled ninbot and paceman for easy setup
+- Stretched and normal measuring overlays
+- Compatible with Char's resize animations https://github.com/char3210/resize_animation/blob/main/resize_animation_waywall.py
+- Support for resolution specific overlays for borders and more
 
 ## Setup:
 ```bash
