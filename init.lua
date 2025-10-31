@@ -38,6 +38,9 @@ local remaps_text_config = { text = "rebinds off", x = 100, y = 100, size = 2 }
 
 local waywall_config_path = os.getenv("HOME") .. "/.config/waywall/"
 local bg_path = waywall_config_path .. "resources/background.png"
+local tall_overlay_path = waywall_config_path .. "resources/overlay_tall.png"
+local thin_overlay_path = waywall_config_path .. "resources/overlay_thin.png"
+local wide_overlay_path = waywall_config_path .. "resources/overlay_wide.png"
 
 local pacem_path = waywall_config_path .. "resources/paceman-tracker-0.7.0.jar"
 local nb_path = waywall_config_path .. "resources/Ninjabrain-Bot-1.5.1.jar"
@@ -320,11 +323,31 @@ local images = {
             and { x = 94, y = 470, w = 900, h = 500 }
             or { x = 30, y = 340, w = 700, h = 400 },
     }),
+    tall_overlay = make_image(tall_overlay_path, {
+        dst = res_1440
+            and { x = 0, y = 0, w = 2560, h = 1440 }
+            or { x = 0, y = 0, w = 1920, h = 1080 },
+    }),
+    thin_overlay = make_image(thin_overlay_path, {
+        dst = res_1440
+            and { x = 0, y = 0, w = 2560, h = 1440 }
+            or { x = 0, y = 0, w = 1920, h = 1080 },
+    }),
+    wide_overlay = make_image(wide_overlay_path, {
+        dst = res_1440
+            and { x = 0, y = 0, w = 2560, h = 1440 }
+            or { x = 0, y = 0, w = 1920, h = 1080 },
+    }),
+
 }
 
 
 --*********************************************************************************************** MANAGING MIRRORS
-local show_mirrors = function(eye, f3, tall, thin)
+local show_mirrors = function(eye, f3, tall, thin, wide)
+    images.tall_overlay(tall)
+    images.thin_overlay(thin)
+    images.wide_overlay(wide)
+
     mirrors.eye_measure(eye)
     if stretched_measure then
         images.stretched_overlay(eye)
@@ -374,18 +397,18 @@ end
 
 --*********************************************************************************************** STATES
 local thin_enable = function()
-    show_mirrors(false, true, false, true)
+    show_mirrors(false, true, false, true, false)
 end
 
 local tall_enable = function()
-    show_mirrors(true, true, true, false)
+    show_mirrors(true, true, true, false, false)
 end
 local wide_enable = function()
-    show_mirrors(false, false, false, false)
+    show_mirrors(false, false, false, false, true)
 end
 
 local res_disable = function()
-    show_mirrors(false, false, false, false)
+    show_mirrors(false, false, false, false, false)
 end
 
 local tall_disable = function()
