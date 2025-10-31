@@ -15,6 +15,11 @@ Thank you so much to @dariasc on discord for producing a config that slowly evol
 - Support for resolution specific overlays for borders and more
 
 ## Setup:
+IMPORTANT: If you already have a config that you wish to save, run this command to move it to waywall.bkp
+```bash
+mv ~/.config/waywall ~/.config/waywall.bkp
+```
+Then or otherwise
 ```bash
 git clone https://github.com/arjuncgore/waywall_generic_config.git ~/.config/waywall
 ```
