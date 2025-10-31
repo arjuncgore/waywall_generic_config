@@ -388,6 +388,9 @@ local res_disable = function()
     show_mirrors(false, false, false, false)
 end
 
+local tall_disable = function()
+    show_mirrors(false, false, false, false, false)
+end
 
 --*********************************************************************************************** RESOLUTIONS
 local make_res = function(width, height, enable, disable)
@@ -407,7 +410,7 @@ end
 
 local resolutions = {
     thin = make_res(res_1440 and 350 or 340, res_1440 and 1100 or 1080, thin_enable, res_disable),
-    tall = make_res(384, 16384, tall_enable, res_disable),
+    tall = make_res(384, 16384, tall_enable, tall_disable),
     wide = make_res(res_1440 and 2560 or 1920, res_1440 and 400 or 300, wide_enable, res_disable),
 }
 
