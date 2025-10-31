@@ -11,10 +11,12 @@ local res_1440 = false
 
 -- ==== MIRRORS ====
 local e_count = { enabled = true, x = 1340, y = 300, size = 5, colorkey = true }
-local thin_pie = { enabled = true, x = 1250, y = 500, size = 4, colorkey = true } -- Turning off colorkeying also maintains the original pie chart's dimensions and shows the percentages
+local thin_pie = { enabled = true, x = 1250, y = 500, size = 3, colorkey = true } -- Turning off colorkeying also maintains the original pie chart's dimensions and shows the percentages
 local thin_percent = { enabled = true, x = 1300, y = 850, size = 6 }
-local tall_pie = { enabled = true, x = 1250, y = 500, size = 4, colorkey = true } -- Leave same as thin for seamlessness
+local tall_pie = { enabled = true, x = 1250, y = 500, size = 3, colorkey = true } -- Leave same as thin for seamlessness
 local tall_percent = { enabled = true, x = 1300, y = 850, size = 6 }              -- Leave same as thin for seamlessness
+
+local stretched_measure = true
 
 -- ==== KEYBINDS ====
 -- resolution change actions
@@ -40,6 +42,7 @@ local bg_path = waywall_config_path .. "resources/background.png"
 local pacem_path = waywall_config_path .. "resources/paceman-tracker-0.7.0.jar"
 local nb_path = waywall_config_path .. "resources/Ninjabrain-Bot-1.5.1.jar"
 local overlay_path = waywall_config_path .. "resources/measuring_overlay.png"
+local stretched_overlay_path = waywall_config_path .. "resources/stretched_overlay.png"
 
 local keyboard_remaps = require("remaps").remapped_kb
 local other_remaps = require("remaps").normal_kb
@@ -67,7 +70,7 @@ local config = {
         debug = false,
         jit = false,
         tearing = false,
-		scene_add_text = true,
+        scene_add_text = true,
     },
 }
 
@@ -282,7 +285,9 @@ local mirrors = {
 
 
     eye_measure = make_mirror({
-        src = { x = 162, y = 7902, w = 60, h = 580 },
+        src = stretched_measure
+            and { x = 177, y = 7902, w = 30, h = 580 }
+            or { x = 162, y = 7902, w = 60, h = 580 },
         dst = res_1440
             and { x = 94, y = 470, w = 900, h = 500 }
             or { x = 30, y = 340, w = 700, h = 400 },
@@ -310,13 +315,22 @@ local images = {
             and { x = 94, y = 470, w = 900, h = 500 }
             or { x = 30, y = 340, w = 700, h = 400 },
     }),
+    stretched_overlay = make_image(stretched_overlay_path, {
+        dst = res_1440
+            and { x = 94, y = 470, w = 900, h = 500 }
+            or { x = 30, y = 340, w = 700, h = 400 },
+    }),
 }
 
 
 --*********************************************************************************************** MANAGING MIRRORS
 local show_mirrors = function(eye, f3, tall, thin)
-    images.measuring_overlay(eye)
     mirrors.eye_measure(eye)
+    if stretched_measure then
+        images.stretched_overlay(eye)
+    else
+        images.measuring_overlay(eye)
+    end
 
     if e_count.enabled then
         mirrors.e_counter(f3)
