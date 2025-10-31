@@ -16,7 +16,7 @@ local thin_percent = { enabled = true, x = 1300, y = 850, size = 6 }
 local tall_pie = { enabled = true, x = 1250, y = 500, size = 3, colorkey = true } -- Leave same as thin for seamlessness
 local tall_percent = { enabled = true, x = 1300, y = 850, size = 6 }              -- Leave same as thin for seamlessness
 
-local stretched_measure = true
+local stretched_measure = false
 
 -- ==== KEYBINDS ====
 -- resolution change actions
