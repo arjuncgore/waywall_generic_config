@@ -38,6 +38,7 @@ local toggle_remaps_key = "Insert"
 -- ==== MISC ====
 local remaps_text_config = { text = "rebinds off", x = 100, y = 100, size = 2 }
 local res_1440 = false
+local sens_change = { enabled = false, normal = 1.0, tall = 0.1 } -- make sure raw input is off
 
 
 
@@ -84,4 +85,5 @@ return {
     toggle_remaps_key = toggle_remaps_key,
 
     remaps_text_config = remaps_text_config,
+    sens_change = sens_change,
 }

@@ -29,8 +29,9 @@ local toggle_remaps_key = cfg.toggle_remaps_key
 local toggle_paceman = cfg.toggle_paceman
 local remaps_text_config = cfg.remaps_text_config
 
--- Other inits
+local sens_change = cfg.sens_change
 
+-- Other inits
 local waywall_config_path = os.getenv("HOME") .. "/.config/waywall/"
 local bg_path = waywall_config_path .. "resources/background.png"
 local tall_overlay_path = waywall_config_path .. "resources/overlay_tall.png"
@@ -55,7 +56,7 @@ local config = {
         repeat_rate = 40,
         repeat_delay = 300,
         remaps = keyboard_remaps,
-        sensitivity = 1.0,
+        sensitivity = (sens_change.enabled and sens_change.normal) or 1.0,
         confine_pointer = false,
     },
     theme = {
@@ -397,6 +398,9 @@ end
 
 local tall_enable = function()
     show_mirrors(true, true, true, false, false)
+    if sens_change.enabled then
+        waywall.set_sensitivity(sens_change.tall)
+    end
 end
 local wide_enable = function()
     show_mirrors(false, false, false, false, true)
@@ -408,6 +412,9 @@ end
 
 local tall_disable = function()
     show_mirrors(false, false, false, false, false)
+    if sens_change.enabled then
+        waywall.set_sensitivity(sens_change.normal)
+    end
 end
 
 --*********************************************************************************************** RESOLUTIONS
