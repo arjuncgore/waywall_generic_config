@@ -1,40 +1,35 @@
--- ==== LOOKS ====
-local bg_col = "#000000"
-local toggle_bg_picture = false
-local primary_col = "#ec6e4e"
-local secondary_col = "#E446C4"
+-- Import from config.lua
+local cfg = require("config")
 
-local ninbot_anchor = "topright" -- topleft, top, topright, left, right, bottomleft, bottomright
-local ninbot_opacity = 1         -- 0 to 1
+local bg_col = cfg.bg_col
+local toggle_bg_picture = cfg.toggle_bg_picture
+local primary_col = cfg.primary_col
+local secondary_col = cfg.secondary_col
+local ninbot_anchor = cfg.ninbot_anchor
+local ninbot_opacity = cfg.ninbot_opacity
+local res_1440 = cfg.res_1440
 
-local res_1440 = false
+local e_count = cfg.e_count
+local thin_pie = cfg.thin_pie
+local thin_percent = cfg.thin_percent
+local tall_pie = cfg.tall_pie
+local tall_percent = cfg.tall_percent
 
--- ==== MIRRORS ====
-local e_count = { enabled = true, x = 1340, y = 300, size = 5, colorkey = true }
-local thin_pie = { enabled = true, x = 1250, y = 500, size = 3, colorkey = true } -- Turning off colorkeying also maintains the original pie chart's dimensions and shows the percentages
-local thin_percent = { enabled = true, x = 1300, y = 850, size = 6 }
-local tall_pie = { enabled = true, x = 1250, y = 500, size = 3, colorkey = true } -- Leave same as thin for seamlessness
-local tall_percent = { enabled = true, x = 1300, y = 850, size = 6 }              -- Leave same as thin for seamlessness
+local stretched_measure = cfg.stretched_measure
 
-local stretched_measure = false
+local thin = cfg.thin
 
--- ==== KEYBINDS ====
--- resolution change actions
-local thin_key = "*-Alt_L"
-local wide_key = "*-V"
-local tall_key = "*-F4"
--- startup actions
-local open_ninbot_key = "Shift-P"
-local toggle_fullscreen_key = "Shift-O"
--- during game actions
-local show_ninbot_key = "*-apostrophe"
-local toggle_remaps_key = "Insert"
+local wide = cfg.wide
+local tall = cfg.tall
+local launch_paceman_key = cfg.launch_paceman_key
+local toggle_fullscreen_key = cfg.toggle_fullscreen_key
+local toggle_ninbot_key = cfg.toggle_ninbot_key
+local toggle_remaps_key = cfg.toggle_remaps_key
 
--- ==== MISC ====
-local toggle_paceman = false
-local remaps_text_config = { text = "rebinds off", x = 100, y = 100, size = 2 }
+local toggle_paceman = cfg.toggle_paceman
+local remaps_text_config = cfg.remaps_text_config
 
--- ==== END OF CONFIG ====
+-- Other inits
 
 local waywall_config_path = os.getenv("HOME") .. "/.config/waywall/"
 local bg_path = waywall_config_path .. "resources/background.png"
@@ -440,28 +435,38 @@ local resolutions = {
 local rebind_text = nil
 
 --*********************************************************************************************** KEYBINDS
+
+local function resize_helper(mode, run)
+    return function()
+        if not remaps_active then
+            return false
+        end
+        if mode.f3_safe and waywall.get_key("F3") then
+            return false
+        end
+        run()
+    end
+end
+
 config.actions = {
-    [thin_key] = function()
-        resolutions.thin()
-    end,
 
-    [wide_key] = function()
-        resolutions.wide()
-    end,
+    [thin.key] = resize_helper(thin, function() resolutions.thin() end),
+    [wide.key] = resize_helper(wide, function() resolutions.wide() end),
+    [tall.key] = resize_helper(tall, function() resolutions.tall() end),
 
-    [tall_key] = function()
-        resolutions.tall()
-    end,
-
-    [show_ninbot_key] = function()
-        helpers.toggle_floating()
+    [toggle_ninbot_key] = function()
+        if not is_ninb_running() then
+            waywall.exec("java -Dawt.useSystemAAFontSettings=on -jar " .. nb_path)
+            waywall.show_floating(true)
+        else
+            helpers.toggle_floating()
+        end
     end,
 
     [toggle_fullscreen_key] = waywall.toggle_fullscreen,
 
-    [open_ninbot_key] = function()
-        exec_ninb()
-        if toggle_paceman then exec_pacem() end
+    [launch_paceman_key] = function()
+        exec_pacem()
     end,
 
     [toggle_remaps_key] = function()
