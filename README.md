@@ -13,6 +13,7 @@ Thank you so much to @dariasc on discord for producing a config that slowly evol
 - Stretched and normal measuring overlays
 - Compatible with Char's resize animations https://github.com/char3210/resize_animation/blob/main/resize_animation_waywall.py
 - Support for resolution specific overlays for borders and more
+- Support for auto changing mouse sensitivity https://github.com/Esensats/mcsr-calcsens
 
 ## Setup:
 IMPORTANT: If you already have a config that you wish to save, run this command to move it to waywall.bkp
@@ -26,7 +27,7 @@ git clone https://github.com/arjuncgore/waywall_generic_config.git ~/.config/way
 This clones this repository directly to your waywall config folder
 
 ## Configuration:
-Just edit `remaps.lua` and the first few lines in `init.lua` for what you want, I'll probably make it easier to configure in the future tho.
+Just edit `remaps.lua` and the first few lines in `config.lua` for what you want. Might add a minor guide here later but it's fairly self-explanatory.
 
 ## 1440p users read this!!!
 If you're using a 1440p monitor, you'll definitely have to change the position of the mirrors, but here's a good place to start!
