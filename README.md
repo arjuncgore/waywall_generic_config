@@ -32,9 +32,9 @@ Just edit `remaps.lua` and the first few lines in `config.lua` for what you want
 ## 1440p users read this!!!
 If you're using a 1440p monitor, you'll definitely have to change the position of the mirrors, but here's a good place to start!
 ```lua
-local e_count = 		{ enabled = true, x = 1500, y = 400, size = 7, colorkey = true} 
-local thin_pie = 		{ enabled = true, x = 1490, y = 645, size = 3, colorkey = true} 
-local thin_percent =	{ enabled = true, x = 1568, y = 1050, size = 8} 
-local tall_pie = 		{ enabled = true, x = 1490, y = 645, size = 3, colorkey = true}
-local tall_percent =	{ enabled = true, x = 1568, y = 1050, size = 8}
+local e_count = 		{ enabled = true, x = 1500, y = 400, size = 5, colorkey = false} 
+local thin_pie = 		{ enabled = true, x = 1490, y = 645, size = 4, colorkey = false} 
+local thin_percent =	{ enabled = true, x = 1568, y = 1050, size = 6} 
+local tall_pie = 		{ enabled = true, x = 1490, y = 645, size = 4, colorkey = false}
+local tall_percent =	{ enabled = true, x = 1568, y = 1050, size = 6}
 ```
