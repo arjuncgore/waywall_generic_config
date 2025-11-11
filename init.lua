@@ -21,6 +21,7 @@ local thin = cfg.thin
 
 local wide = cfg.wide
 local tall = cfg.tall
+local extra = cfg.extra
 local launch_paceman_key = cfg.launch_paceman_key
 local toggle_fullscreen_key = cfg.toggle_fullscreen_key
 local toggle_ninbot_key = cfg.toggle_ninbot_key
@@ -402,6 +403,12 @@ local tall_enable = function()
         waywall.set_sensitivity(sens_change.tall)
     end
 end
+local extra_enable = function()
+    show_mirrors(false, true, true, false, false)
+    if sens_change.enabled then
+        waywall.set_sensitivity(sens_change.tall)
+    end
+end
 local wide_enable = function()
     show_mirrors(false, false, false, false, true)
 end
@@ -434,9 +441,10 @@ end
 
 
 local resolutions = {
-    thin = make_res(res_1440 and 350 or 340, res_1440 and 1100 or 1080, thin_enable, res_disable),
+    thin = make_res(res_1440 and 350 or 348, res_1440 and 1100 or 1080, thin_enable, res_disable),
     tall = make_res(384, 16384, tall_enable, tall_disable),
     wide = make_res(res_1440 and 2560 or 1920, res_1440 and 400 or 300, wide_enable, res_disable),
+    extra = make_res(384, 16384, extra_enable, res_disable),
 }
 
 local rebind_text = nil
@@ -460,6 +468,7 @@ config.actions = {
     [thin.key] = resize_helper(thin, function() resolutions.thin() end),
     [wide.key] = resize_helper(wide, function() resolutions.wide() end),
     [tall.key] = resize_helper(tall, function() resolutions.tall() end),
+    [extra.key] = resize_helper(extra, function() resolutions.extra() end),
 
     [toggle_ninbot_key] = function()
         if not is_ninb_running() then
