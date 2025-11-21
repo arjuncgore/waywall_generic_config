@@ -29,6 +29,8 @@ This clones this repository directly to your waywall config folder
 ## Configuration:
 Just edit `remaps.lua` and the first few lines in `config.lua` for what you want. Might add a minor guide here later but it's fairly self-explanatory.
 
+Use this link with an overlay width of 30 to create your own stretched overlay https://qmaxxen.github.io/overlay-gen/more-options/
+
 ## 1440p users read this!!!
 If you're using a 1440p monitor, you'll definitely have to change the position of the mirrors, but here's a good place to start!
 ```lua
