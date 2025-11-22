@@ -38,7 +38,7 @@ local tall_overlay_path = waywall_config_path .. "resources/overlay_tall.png"
 local thin_overlay_path = waywall_config_path .. "resources/overlay_thin.png"
 local wide_overlay_path = waywall_config_path .. "resources/overlay_wide.png"
 
-local pacem_path = waywall_config_path .. "resources/paceman-tracker-0.7.0.jar"
+local pacem_path = waywall_config_path .. "resources/paceman-tracker-0.7.1.jar"
 local nb_path = waywall_config_path .. "resources/Ninjabrain-Bot-1.5.1.jar"
 local overlay_path = waywall_config_path .. "resources/measuring_overlay.png"
 local stretched_overlay_path = waywall_config_path .. "resources/stretched_overlay.png"
