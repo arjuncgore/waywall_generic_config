@@ -25,6 +25,7 @@ Then or otherwise
 git clone https://github.com/arjuncgore/waywall_generic_config.git ~/.config/waywall
 ```
 This clones this repository directly to your waywall config folder
+
 If you have a 1440p monitor, add this argument to the clone command `-b 1440`
 
 ## Configuration:
