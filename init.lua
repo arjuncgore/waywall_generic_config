@@ -28,6 +28,7 @@ local toggle_remaps_key = cfg.toggle_remaps_key
 
 local remaps_config = cfg.remaps_config
 local remaps_text_config = cfg.remaps_text_config
+local enable_resize_animations = cfg.enable_resize_animations
 
 local sens_change = cfg.sens_change
 
@@ -423,9 +424,17 @@ local make_res = function(width, height, enable, disable)
         local active_width, active_height = waywall.active_res()
 
         if active_width == width and active_height == height then
+            if enable_resize_animations then
+                os.execute('echo "0x0" > ~/.resetti_state')
+                waywall.sleep(17)
+            end
             waywall.set_resolution(0, 0)
             disable()
         else
+            if enable_resize_animations then
+                os.execute(string.format('echo "%dx%d" > ~/.resetti_state', width, height))
+                waywall.sleep(17)
+            end
             waywall.set_resolution(width, height)
             enable()
         end

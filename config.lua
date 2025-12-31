@@ -40,5 +40,6 @@ return {
     remaps_text_config = { text = "remaps off", x = 100, y = 100, size = 2 },
     res_1440 = false,
     sens_change = { enabled = false, normal = 1.0, tall = 0.1 }, -- make sure raw input is off
+    enable_resize_animations = false,
 
 }
