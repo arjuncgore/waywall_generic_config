@@ -26,7 +26,7 @@ local toggle_fullscreen_key = cfg.toggle_fullscreen_key
 local toggle_ninbot_key = cfg.toggle_ninbot_key
 local toggle_remaps_key = cfg.toggle_remaps_key
 
-local toggle_paceman = cfg.toggle_paceman
+local remaps_config = cfg.remaps_config
 local remaps_text_config = cfg.remaps_text_config
 
 local sens_change = cfg.sens_change
@@ -52,7 +52,7 @@ local helpers = require("waywall.helpers")
 
 local config = {
     input = {
-        layout = "us",
+        layout = (remaps_config.enabled and remaps_config.layout_name) or "us",
         repeat_rate = 40,
         repeat_delay = 300,
         remaps = keyboard_remaps,
@@ -481,11 +481,16 @@ config.actions = {
             rebind_text:close()
             rebind_text = nil
         end
-        remaps_active = not remaps_active
-        waywall.set_remaps(remaps_active and keyboard_remaps or other_remaps)
-        if not remaps_active then
-            rebind_text = waywall.text(remaps_text_config.text, remaps_text_config.x, remaps_text_config.y, "#FFFFFF",
-                remaps_text_config.size)
+        if remaps_active then
+            remaps_active = false
+            waywall.set_remaps(other_remaps)
+            if remaps_config.enabled then waywall.set_keymap({ layout = remaps_config.layout_name }) end
+        else
+            remaps_active = true
+            waywall.set_remaps(keyboard_remaps)
+            if remaps_config.enabled then waywall.set_keymap({ layout = remaps_config.layout_name }) end
+            rebind_text = waywall.text(remaps_text_config.text,
+                { x = remaps_text_config.x, y = remaps_text_config.y, color = "#FFFFFF", size = remaps_text_config.size })
         end
     end,
 
