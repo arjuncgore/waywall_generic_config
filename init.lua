@@ -3,8 +3,10 @@ local cfg = require("config")
 
 local bg_col = cfg.bg_col
 local toggle_bg_picture = cfg.toggle_bg_picture
-local primary_col = cfg.primary_col
-local secondary_col = cfg.secondary_col
+local text_col = cfg.text_col
+local pie_chart_1 = cfg.pie_chart_1
+local pie_chart_2 = cfg.pie_chart_2
+local pie_chart_3 = cfg.pie_chart_3
 local ninbot_anchor = cfg.ninbot_anchor
 local ninbot_opacity = cfg.ninbot_opacity
 local res_1440 = cfg.res_1440
@@ -123,8 +125,8 @@ local mirrors = {
         src = { x = 13, y = 37, w = 37, h = 9 },
         dst = { x = e_count.x, y = e_count.y, w = 37 * e_count.size, h = 9 * e_count.size },
         color_key = e_count.colorkey and {
-            input = "#dddddd",
-            output = primary_col,
+            input = "#DDDDDD",
+            output = text_col,
         } or nil,
     }),
 
@@ -136,14 +138,14 @@ local mirrors = {
         dst = { x = thin_pie.x, y = thin_pie.y, w = 420 * thin_pie.size / 4, h = 273 * thin_pie.size / 4 },
     }),
 
-    thin_pie_entities = make_mirror({
+    thin_pie_blockentities = make_mirror({
         src = res_1440
             and { x = 10, y = 694, w = 340, h = 178 }
             or { x = 0, y = 674, w = 340, h = 178 },
         dst = { x = thin_pie.x, y = thin_pie.y, w = 420 * thin_pie.size / 4, h = 423 * thin_pie.size / 4 },
         color_key = {
-            input = "#E446C4",
-            output = secondary_col,
+            input = "#EC6E4E",
+            output = pie_chart_1,
         },
     }),
     thin_pie_unspecified = make_mirror({
@@ -153,17 +155,7 @@ local mirrors = {
         dst = { x = thin_pie.x, y = thin_pie.y, w = 420 * thin_pie.size / 4, h = 423 * thin_pie.size / 4 },
         color_key = {
             input = "#46CE66",
-            output = secondary_col,
-        },
-    }),
-    thin_pie_blockentities = make_mirror({
-        src = res_1440
-            and { x = 10, y = 694, w = 340, h = 178 }
-            or { x = 0, y = 674, w = 340, h = 178 },
-        dst = { x = thin_pie.x, y = thin_pie.y, w = 420 * thin_pie.size / 4, h = 423 * thin_pie.size / 4 },
-        color_key = {
-            input = "#ec6e4e",
-            output = primary_col,
+            output = pie_chart_2,
         },
     }),
     thin_pie_destroyProgress = make_mirror({
@@ -173,7 +165,7 @@ local mirrors = {
         dst = { x = thin_pie.x, y = thin_pie.y, w = 420 * thin_pie.size / 4, h = 423 * thin_pie.size / 4 },
         color_key = {
             input = "#CC6C46",
-            output = secondary_col,
+            output = pie_chart_2,
         },
     }),
     thin_pie_prepare = make_mirror({
@@ -183,7 +175,17 @@ local mirrors = {
         dst = { x = thin_pie.x, y = thin_pie.y, w = 420 * thin_pie.size / 4, h = 423 * thin_pie.size / 4 },
         color_key = {
             input = "#464C46",
-            output = secondary_col,
+            output = pie_chart_2,
+        },
+    }),
+    thin_pie_entities = make_mirror({
+        src = res_1440
+            and { x = 10, y = 694, w = 340, h = 178 }
+            or { x = 0, y = 674, w = 340, h = 178 },
+        dst = { x = thin_pie.x, y = thin_pie.y, w = 420 * thin_pie.size / 4, h = 423 * thin_pie.size / 4 },
+        color_key = {
+            input = "#E446C4",
+            output = pie_chart_3,
         },
     }),
 
@@ -200,8 +202,8 @@ local mirrors = {
             or { x = 247, y = 859, w = 33, h = 25 },
         dst = { x = thin_percent.x, y = thin_percent.y, w = 33 * thin_percent.size, h = 25 * thin_percent.size },
         color_key = {
-            input = "#e96d4d",
-            output = secondary_col,
+            input = "#E96D4D",
+            output = text_col,
         },
     }),
     thin_percent_unspecified = make_mirror({
@@ -210,8 +212,8 @@ local mirrors = {
             or { x = 247, y = 859, w = 33, h = 25 },
         dst = { x = thin_percent.x, y = thin_percent.y, w = 33 * thin_percent.size, h = 25 * thin_percent.size },
         color_key = {
-            input = "#45cb65",
-            output = secondary_col,
+            input = "#45CB65",
+            output = text_col,
         },
     }),
 
@@ -225,7 +227,7 @@ local mirrors = {
         dst = { x = tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
         color_key = {
             input = "#E446C4",
-            output = secondary_col,
+            output = pie_chart_1,
         },
     }),
     tall_pie_unspecified = make_mirror({
@@ -233,15 +235,7 @@ local mirrors = {
         dst = { x = tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
         color_key = {
             input = "#46CE66",
-            output = secondary_col,
-        },
-    }),
-    tall_pie_blockentities = make_mirror({
-        src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
-        color_key = {
-            input = "#ec6e4e",
-            output = primary_col,
+            output = pie_chart_2,
         },
     }),
     tall_pie_destroyProgress = make_mirror({
@@ -249,7 +243,7 @@ local mirrors = {
         dst = { x = tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
         color_key = {
             input = "#CC6C46",
-            output = secondary_col,
+            output = pie_chart_2,
         },
     }),
     tall_pie_prepare = make_mirror({
@@ -257,7 +251,15 @@ local mirrors = {
         dst = { x = tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
         color_key = {
             input = "#464C46",
-            output = secondary_col,
+            output = pie_chart_2,
+        },
+    }),
+    tall_pie_blockentities = make_mirror({
+        src = { x = 44, y = 15978, w = 340, h = 178 },
+        dst = { x = tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
+        color_key = {
+            input = "#EC6E4E",
+            output = pie_chart_3,
         },
     }),
 
@@ -270,16 +272,16 @@ local mirrors = {
         src = { x = 291, y = 16163, w = 33, h = 25 },
         dst = { x = tall_percent.x, y = tall_percent.y, w = 33 * tall_percent.size, h = 25 * tall_percent.size },
         color_key = {
-            input = "#e96d4d",
-            output = secondary_col,
+            input = "#E96D4D",
+            output = text_col,
         },
     }),
     tall_percent_unspecified = make_mirror({
         src = { x = 291, y = 16163, w = 33, h = 25 },
         dst = { x = tall_percent.x, y = tall_percent.y, w = 33 * tall_percent.size, h = 25 * tall_percent.size },
         color_key = {
-            input = "#45cb65",
-            output = secondary_col,
+            input = "#45CB65",
+            output = text_col,
         },
     }),
 
@@ -493,13 +495,13 @@ config.actions = {
         if remaps_active then
             remaps_active = false
             waywall.set_remaps(other_remaps)
-            if remaps_config.enabled then waywall.set_keymap({ layout = remaps_config.layout_name }) end
+            if remaps_config.enabled then waywall.set_keymap({ layout = "us" }) end
+            rebind_text = waywall.text(remaps_text_config.text,
+                { x = remaps_text_config.x, y = remaps_text_config.y, color = "#FFFFFF", size = remaps_text_config.size })
         else
             remaps_active = true
             waywall.set_remaps(keyboard_remaps)
             if remaps_config.enabled then waywall.set_keymap({ layout = remaps_config.layout_name }) end
-            rebind_text = waywall.text(remaps_text_config.text,
-                { x = remaps_text_config.x, y = remaps_text_config.y, color = "#FFFFFF", size = remaps_text_config.size })
         end
     end,
 

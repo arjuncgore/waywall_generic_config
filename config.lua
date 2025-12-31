@@ -3,8 +3,11 @@ return {
     -- ==== LOOKS ====
     bg_col = "#000000",
     toggle_bg_picture = false,
-    primary_col = "#EX6E4E",
-    secondary_col = "#E446C4",
+    text_col = "#FFFFFF",
+    pie_chart_1 = "#EC6E4E",
+    pie_chart_2 = "#E446C4",
+    pie_chart_3 = "#46CE66",
+
 
     ninbot_anchor = "topright", -- topleft, top, topright, left, right, bottomleft, bottomright
     ninbot_opacity = 1,         -- 0 to 1
