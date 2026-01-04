@@ -1,4 +1,4 @@
--- ======== WAYWALL GENERIC CONFIG ========
+-- ==== WAYWALL GENERIC CONFIG ====
 return {
     -- ==== LOOKS ====
     bg_col = "#000000",
