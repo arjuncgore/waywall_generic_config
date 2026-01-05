@@ -22,6 +22,7 @@ local stretched_overlay_path = waywall_config_path .. "resources/stretched_overl
 -- ==== INITS ====
 local remaps_active = true
 local rebind_text = nil
+local thin_active = false
 
 -- ==== CONFIG TABLE ====
 local config = {
@@ -71,12 +72,6 @@ local is_ninb_running = function()
     return result ~= nil
 end
 
-local exec_ninb = function()
-    if not is_ninb_running() then
-        waywall.exec("java -Dawt.useSystemAAFontSettings=on -jar " .. nb_path)
-    end
-end
-
 -- ==== MIRRORS ====
 local make_mirror = function(options)
     local this = nil
@@ -101,14 +96,14 @@ local mirrors = {
         } or nil,
     }),
 
-    cfg.thin_pie_all = make_mirror({
+    thin_pie_all = make_mirror({
         src = cfg.res_1440
             and { x = 10, y = 694, w = 340, h = 221 }
             or { x = 0, y = 674, w = 340, h = 221 },
         dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 273 * cfg.thin_pie.size / 4 },
     }),
 
-    cfg.thin_pie_blockentities = make_mirror({
+    thin_pie_blockentities = make_mirror({
         src = cfg.res_1440
             and { x = 10, y = 694, w = 340, h = 178 }
             or { x = 0, y = 674, w = 340, h = 178 },
@@ -118,7 +113,7 @@ local mirrors = {
             output = cfg.pie_chart_1,
         },
     }),
-    cfg.thin_pie_unspecified = make_mirror({
+    thin_pie_unspecified = make_mirror({
         src = cfg.res_1440
             and { x = 10, y = 694, w = 340, h = 178 }
             or { x = 0, y = 674, w = 340, h = 178 },
@@ -128,7 +123,7 @@ local mirrors = {
             output = cfg.pie_chart_2,
         },
     }),
-    cfg.thin_pie_destroyProgress = make_mirror({
+    thin_pie_destroyProgress = make_mirror({
         src = cfg.res_1440
             and { x = 10, y = 694, w = 340, h = 178 }
             or { x = 0, y = 674, w = 340, h = 178 },
@@ -138,7 +133,7 @@ local mirrors = {
             output = cfg.pie_chart_2,
         },
     }),
-    cfg.thin_pie_prepare = make_mirror({
+    thin_pie_prepare = make_mirror({
         src = cfg.res_1440
             and { x = 10, y = 694, w = 340, h = 178 }
             or { x = 0, y = 674, w = 340, h = 178 },
@@ -148,7 +143,7 @@ local mirrors = {
             output = cfg.pie_chart_2,
         },
     }),
-    cfg.thin_pie_entities = make_mirror({
+    thin_pie_entities = make_mirror({
         src = cfg.res_1440
             and { x = 10, y = 694, w = 340, h = 178 }
             or { x = 0, y = 674, w = 340, h = 178 },
@@ -188,11 +183,11 @@ local mirrors = {
 
     tall_pie_all = make_mirror({
         src = { x = 44, y = 15978, w = 340, h = 221 },
-        dst = { x = cfg.tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 273 * tall_pie.size / 4 },
+        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 273 * cfg.tall_pie.size / 4 },
     }),
     tall_pie_entities = make_mirror({
         src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = cfg.tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
+        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
         color_key = {
             input = "#E446C4",
             output = cfg.pie_chart_1,
@@ -200,7 +195,7 @@ local mirrors = {
     }),
     tall_pie_unspecified = make_mirror({
         src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = cfg.tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
+        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
         color_key = {
             input = "#46CE66",
             output = cfg.pie_chart_2,
@@ -208,7 +203,7 @@ local mirrors = {
     }),
     tall_pie_destroyProgress = make_mirror({
         src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = cfg.tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
+        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
         color_key = {
             input = "#CC6C46",
             output = cfg.pie_chart_2,
@@ -216,7 +211,7 @@ local mirrors = {
     }),
     tall_pie_prepare = make_mirror({
         src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = cfg.tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
+        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
         color_key = {
             input = "#464C46",
             output = cfg.pie_chart_2,
@@ -224,7 +219,7 @@ local mirrors = {
     }),
     tall_pie_blockentities = make_mirror({
         src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = cfg.tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
+        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
         color_key = {
             input = "#EC6E4E",
             output = cfg.pie_chart_3,
@@ -325,13 +320,13 @@ local show_mirrors = function(f3, tall, thin, wide)
 
     if cfg.thin_pie.enabled then
         if cfg.thin_pie.colorkey then
-            mirrors.cfg.thin_pie_entities(thin)
-            mirrors.cfg.thin_pie_unspecified(thin)
-            mirrors.cfg.thin_pie_blockentities(thin)
-            mirrors.cfg.thin_pie_destroyProgress(thin)
-            mirrors.cfg.thin_pie_prepare(thin)
+            mirrors.thin_pie_entities(thin)
+            mirrors.thin_pie_unspecified(thin)
+            mirrors.thin_pie_blockentities(thin)
+            mirrors.thin_pie_destroyProgress(thin)
+            mirrors.thin_pie_prepare(thin)
         else
-            mirrors.cfg.thin_pie_all(thin)
+            mirrors.thin_pie_all(thin)
         end
     end
 
@@ -362,6 +357,7 @@ end
 -- ==== RESIZING STATES ====
 local thin_enable = function()
     show_mirrors(true, false, true, false)
+    thin_active = true
     if cfg.sens_change.enabled then
         waywall.set_sensitivity(cfg.sens_change.normal)
     end
@@ -369,15 +365,17 @@ end
 
 local tall_enable = function()
     show_mirrors(true, true, false, false)
-    if cfg.sens_change.enabled then
-        waywall.set_sensitivity(cfg.sens_change.cfg.tall)
+    if cfg.sens_change.enabled and not thin_active then
+        waywall.set_sensitivity(cfg.sens_change.tall)
     end
+    thin_active = false
 end
 local wide_enable = function()
     show_mirrors(false, false, false, true)
     if cfg.sens_change.enabled then
         waywall.set_sensitivity(cfg.sens_change.normal)
     end
+    thin_active = false
 end
 
 local res_disable = function()
@@ -385,6 +383,7 @@ local res_disable = function()
     if cfg.sens_change.enabled then
         waywall.set_sensitivity(cfg.sens_change.normal)
     end
+    thin_active = false
 end
 
 -- ==== RESOLUTIONS ====
@@ -411,9 +410,9 @@ local make_res = function(width, height, enable, disable)
 end
 
 local resolutions = {
-    cfg.thin = make_res(cfg.res_1440 and 350 or 340, cfg.res_1440 and 1100 or 1080, thin_enable, res_disable),
-    cfg.tall = make_res(384, 16384, tall_enable, res_disable),
-    cfg.wide = make_res(cfg.res_1440 and 2560 or 1920, cfg.res_1440 and 400 or 300, wide_enable, res_disable),
+    thin = make_res(cfg.res_1440 and 350 or 340, cfg.res_1440 and 1100 or 1080, thin_enable, res_disable),
+    tall = make_res(384, 16384, tall_enable, res_disable),
+    wide = make_res(cfg.res_1440 and 2560 or 1920, cfg.res_1440 and 400 or 300, wide_enable, res_disable),
 }
 
 local function resize_helper(mode, run)
@@ -432,9 +431,9 @@ end
 -- ==== KEYBINDS ====
 config.actions = {
 
-    [cfg.thin.key] = resize_helper(cfg.thin, function() resolutions.cfg.thin() end),
-    [cfg.wide.key] = resize_helper(cfg.wide, function() resolutions.cfg.wide() end),
-    [cfg.tall.key] = resize_helper(cfg.tall, function() resolutions.cfg.tall() end),
+    [cfg.thin.key] = resize_helper(cfg.thin, function() resolutions.thin() end),
+    [cfg.wide.key] = resize_helper(cfg.wide, function() resolutions.wide() end),
+    [cfg.tall.key] = resize_helper(cfg.tall, function() resolutions.tall() end),
 
     [cfg.toggle_ninbot_key] = function()
         if not is_ninb_running() then
