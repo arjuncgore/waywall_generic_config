@@ -154,42 +154,15 @@ local mirrors = {
         },
     }),
 
-    thin_percent_all = make_mirror({
-        src = cfg.res_1440
-            and { x = 257, y = 879, w = 33, h = 25 }
-            or { x = 247, y = 859, w = 33, h = 25 },
-        dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
-    }),
-    thin_percent_blockentities = make_mirror({
-        src = cfg.res_1440
-            and { x = 257, y = 879, w = 33, h = 25 }
-            or { x = 247, y = 859, w = 33, h = 25 },
-        dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
-        color_key = {
-            input = "#E96D4D",
-            output = cfg.text_col,
-        },
-    }),
-    thin_percent_unspecified = make_mirror({
-        src = cfg.res_1440
-            and { x = 257, y = 879, w = 33, h = 25 }
-            or { x = 247, y = 859, w = 33, h = 25 },
-        dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
-        color_key = {
-            input = "#45CB65",
-            output = cfg.text_col,
-        },
-    }),
-
     tall_pie_all = make_mirror({
         src = { x = 44, y = 15978, w = 340, h = 221 },
         dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 273 * cfg.tall_pie.size / 4 },
     }),
-    tall_pie_entities = make_mirror({
+    tall_pie_blockentities = make_mirror({
         src = { x = 44, y = 15978, w = 340, h = 178 },
         dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
         color_key = {
-            input = "#E446C4",
+            input = "#EC6E4E",
             output = cfg.pie_chart_1,
         },
     }),
@@ -217,12 +190,39 @@ local mirrors = {
             output = cfg.pie_chart_2,
         },
     }),
-    tall_pie_blockentities = make_mirror({
+    tall_pie_entities = make_mirror({
         src = { x = 44, y = 15978, w = 340, h = 178 },
         dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
         color_key = {
-            input = "#EC6E4E",
+            input = "#E446C4",
             output = cfg.pie_chart_3,
+        },
+    }),
+
+    thin_percent_all = make_mirror({
+        src = cfg.res_1440
+            and { x = 257, y = 879, w = 33, h = 25 }
+            or { x = 247, y = 859, w = 33, h = 25 },
+        dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
+    }),
+    thin_percent_blockentities = make_mirror({
+        src = cfg.res_1440
+            and { x = 257, y = 879, w = 33, h = 25 }
+            or { x = 247, y = 859, w = 33, h = 25 },
+        dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
+        color_key = {
+            input = "#E96D4D",
+            output = cfg.text_col,
+        },
+    }),
+    thin_percent_unspecified = make_mirror({
+        src = cfg.res_1440
+            and { x = 257, y = 879, w = 33, h = 25 }
+            or { x = 247, y = 859, w = 33, h = 25 },
+        dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
+        color_key = {
+            input = "#45CB65",
+            output = cfg.text_col,
         },
     }),
 
@@ -463,7 +463,12 @@ config.actions = {
             waywall.set_remaps(other_remaps)
             if cfg.remaps_config.enabled then waywall.set_keymap({ layout = "us" }) end
             rebind_text = waywall.text(cfg.remaps_text_config.text,
-                { x = cfg.remaps_text_config.x, y = cfg.remaps_text_config.y, color = "#FFFFFF", size = cfg.remaps_text_config.size })
+                {
+                    x = cfg.remaps_text_config.x,
+                    y = cfg.remaps_text_config.y,
+                    color = cfg.remaps_text_config.color,
+                    size = cfg.remaps_text_config.size
+                })
         else
             remaps_active = true
             waywall.set_remaps(keyboard_remaps)
