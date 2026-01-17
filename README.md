@@ -1,8 +1,5 @@
 # Waywall-generic-config
 
-## Credits:
-Thank you so much to @dariasc on discord for producing a config that slowly evolved into this config!
-
 ## Features:
 - Configurable colors for mirrors and background
 - Configurable ninbot position and opacity
@@ -26,7 +23,7 @@ git clone https://github.com/arjuncgore/waywall_generic_config.git ~/.config/way
 ```
 This clones this repository directly to your waywall config folder
 
-If you have a 1440p monitor, add this argument to the clone command `-b 1440`
+If you have a 1440p monitor, add this argument to the clone command `-b 1440` (WIP)
 
 ## Configuration:
 Just edit `remaps.lua` and the first few lines in `config.lua` for what you want. Might add a minor guide here later but it's fairly self-explanatory.
@@ -48,3 +45,6 @@ Use this link with an overlay width of 30 to create your own stretched overlay h
 <img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/68b9003b-befe-49e1-8f06-b0dbcf7d2648" />
 
 <img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/583a471d-005f-4986-b593-2f9633e09254" />
+
+## Credits:
+Thank you so much to @dariasc on discord for producing a config that slowly evolved into this config!

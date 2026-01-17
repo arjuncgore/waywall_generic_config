@@ -1,37 +1,13 @@
--- Import from config.lua
+-- ==== WAYWALL ====
+local waywall = require("waywall")
+local helpers = require("waywall.helpers")
+
+-- ==== USER CONFIG ====
 local cfg = require("config")
+local keyboard_remaps = require("remaps").remapped_kb
+local other_remaps = require("remaps").normal_kb
 
-local bg_col = cfg.bg_col
-local toggle_bg_picture = cfg.toggle_bg_picture
-local primary_col = cfg.primary_col
-local secondary_col = cfg.secondary_col
-local ninbot_anchor = cfg.ninbot_anchor
-local ninbot_opacity = cfg.ninbot_opacity
-local res_1440 = cfg.res_1440
-
-local e_count = cfg.e_count
-local thin_pie = cfg.thin_pie
-local thin_percent = cfg.thin_percent
-local tall_pie = cfg.tall_pie
-local tall_percent = cfg.tall_percent
-
-local stretched_measure = cfg.stretched_measure
-
-local thin = cfg.thin
-
-local wide = cfg.wide
-local tall = cfg.tall
-local launch_paceman_key = cfg.launch_paceman_key
-local toggle_fullscreen_key = cfg.toggle_fullscreen_key
-local toggle_ninbot_key = cfg.toggle_ninbot_key
-local toggle_remaps_key = cfg.toggle_remaps_key
-
-local toggle_paceman = cfg.toggle_paceman
-local remaps_text_config = cfg.remaps_text_config
-
-local sens_change = cfg.sens_change
-
--- Other inits
+-- ==== RESOURCES ====
 local waywall_config_path = os.getenv("HOME") .. "/.config/waywall/"
 local bg_path = waywall_config_path .. "resources/background.png"
 local tall_overlay_path = waywall_config_path .. "resources/overlay_tall.png"
@@ -43,27 +19,26 @@ local nb_path = waywall_config_path .. "resources/Ninjabrain-Bot-1.5.1.jar"
 local overlay_path = waywall_config_path .. "resources/measuring_overlay.png"
 local stretched_overlay_path = waywall_config_path .. "resources/stretched_overlay.png"
 
-local keyboard_remaps = require("remaps").remapped_kb
-local other_remaps = require("remaps").normal_kb
+-- ==== INITS ====
 local remaps_active = true
+local rebind_text = nil
+local thin_active = false
 
-local waywall = require("waywall")
-local helpers = require("waywall.helpers")
-
+-- ==== CONFIG TABLE ====
 local config = {
     input = {
-        layout = "us",
+        layout = (cfg.remaps_config.enabled and cfg.remaps_config.layout_name) or "us",
         repeat_rate = 40,
         repeat_delay = 300,
         remaps = keyboard_remaps,
-        sensitivity = (sens_change.enabled and sens_change.normal) or 1.0,
+        sensitivity = (cfg.sens_change.enabled and cfg.sens_change.normal) or 1.0,
         confine_pointer = false,
     },
     theme = {
-        background = bg_col,
-        background_png = toggle_bg_picture and bg_path or nil,
-        ninb_anchor = ninbot_anchor,
-        ninb_opacity = ninbot_opacity,
+        background = cfg.bg_col,
+        background_png = cfg.toggle_bg_picture and bg_path or nil,
+        ninb_anchor = cfg.ninbot_anchor,
+        ninb_opacity = cfg.ninbot_opacity,
     },
     experimental = {
         debug = false,
@@ -74,7 +49,7 @@ local config = {
 }
 
 
---*********************************************************************************************** PACEMAN
+-- ==== PACEMAN ====
 local is_pacem_running = function()
     local handle = io.popen("pgrep -f 'paceman..*'")
     local result = handle:read("*l")
@@ -89,7 +64,7 @@ local exec_pacem = function()
 end
 
 
---*********************************************************************************************** NINJABRAIN
+-- ==== NINJABRAIN ====
 local is_ninb_running = function()
     local handle = io.popen("pgrep -f 'Ninjabrain.*jar'")
     local result = handle:read("*l")
@@ -97,13 +72,7 @@ local is_ninb_running = function()
     return result ~= nil
 end
 
-local exec_ninb = function()
-    if not is_ninb_running() then
-        waywall.exec("java -Dawt.useSystemAAFontSettings=on -jar " .. nb_path)
-    end
-end
-
---*********************************************************************************************** MIRRORS
+-- ==== MIRRORS ====
 local make_mirror = function(options)
     local this = nil
 
@@ -120,181 +89,176 @@ end
 local mirrors = {
     e_counter = make_mirror({
         src = { x = 13, y = 37, w = 37, h = 9 },
-        dst = { x = e_count.x, y = e_count.y, w = 37 * e_count.size, h = 9 * e_count.size },
-        color_key = e_count.colorkey and {
-            input = "#dddddd",
-            output = primary_col,
+        dst = { x = cfg.e_count.x, y = cfg.e_count.y, w = 37 * cfg.e_count.size, h = 9 * cfg.e_count.size },
+        color_key = cfg.e_count.colorkey and {
+            input = "#DDDDDD",
+            output = cfg.text_col,
         } or nil,
     }),
 
-
     thin_pie_all = make_mirror({
-        src = res_1440
+        src = cfg.res_1440
             and { x = 10, y = 694, w = 340, h = 221 }
             or { x = 0, y = 674, w = 340, h = 221 },
-        dst = { x = thin_pie.x, y = thin_pie.y, w = 420 * thin_pie.size / 4, h = 273 * thin_pie.size / 4 },
+        dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 273 * cfg.thin_pie.size / 4 },
     }),
 
-    thin_pie_entities = make_mirror({
-        src = res_1440
+    thin_pie_blockentities = make_mirror({
+        src = cfg.res_1440
             and { x = 10, y = 694, w = 340, h = 178 }
             or { x = 0, y = 674, w = 340, h = 178 },
-        dst = { x = thin_pie.x, y = thin_pie.y, w = 420 * thin_pie.size / 4, h = 423 * thin_pie.size / 4 },
+        dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 423 * cfg.thin_pie.size / 4 },
         color_key = {
-            input = "#E446C4",
-            output = secondary_col,
+            input = "#EC6E4E",
+            output = cfg.pie_chart_1,
         },
     }),
     thin_pie_unspecified = make_mirror({
-        src = res_1440
+        src = cfg.res_1440
             and { x = 10, y = 694, w = 340, h = 178 }
             or { x = 0, y = 674, w = 340, h = 178 },
-        dst = { x = thin_pie.x, y = thin_pie.y, w = 420 * thin_pie.size / 4, h = 423 * thin_pie.size / 4 },
+        dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 423 * cfg.thin_pie.size / 4 },
         color_key = {
             input = "#46CE66",
-            output = secondary_col,
-        },
-    }),
-    thin_pie_blockentities = make_mirror({
-        src = res_1440
-            and { x = 10, y = 694, w = 340, h = 178 }
-            or { x = 0, y = 674, w = 340, h = 178 },
-        dst = { x = thin_pie.x, y = thin_pie.y, w = 420 * thin_pie.size / 4, h = 423 * thin_pie.size / 4 },
-        color_key = {
-            input = "#ec6e4e",
-            output = primary_col,
+            output = cfg.pie_chart_2,
         },
     }),
     thin_pie_destroyProgress = make_mirror({
-        src = res_1440
+        src = cfg.res_1440
             and { x = 10, y = 694, w = 340, h = 178 }
             or { x = 0, y = 674, w = 340, h = 178 },
-        dst = { x = thin_pie.x, y = thin_pie.y, w = 420 * thin_pie.size / 4, h = 423 * thin_pie.size / 4 },
+        dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 423 * cfg.thin_pie.size / 4 },
         color_key = {
             input = "#CC6C46",
-            output = secondary_col,
+            output = cfg.pie_chart_2,
         },
     }),
     thin_pie_prepare = make_mirror({
-        src = res_1440
+        src = cfg.res_1440
             and { x = 10, y = 694, w = 340, h = 178 }
             or { x = 0, y = 674, w = 340, h = 178 },
-        dst = { x = thin_pie.x, y = thin_pie.y, w = 420 * thin_pie.size / 4, h = 423 * thin_pie.size / 4 },
+        dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 423 * cfg.thin_pie.size / 4 },
         color_key = {
             input = "#464C46",
-            output = secondary_col,
+            output = cfg.pie_chart_2,
         },
     }),
-
-
-    thin_percent_all = make_mirror({
-        src = res_1440
-            and { x = 257, y = 879, w = 33, h = 25 }
-            or { x = 247, y = 859, w = 33, h = 25 },
-        dst = { x = thin_percent.x, y = thin_percent.y, w = 33 * thin_percent.size, h = 25 * thin_percent.size },
-    }),
-    thin_percent_blockentities = make_mirror({
-        src = res_1440
-            and { x = 257, y = 879, w = 33, h = 25 }
-            or { x = 247, y = 859, w = 33, h = 25 },
-        dst = { x = thin_percent.x, y = thin_percent.y, w = 33 * thin_percent.size, h = 25 * thin_percent.size },
+    thin_pie_entities = make_mirror({
+        src = cfg.res_1440
+            and { x = 10, y = 694, w = 340, h = 178 }
+            or { x = 0, y = 674, w = 340, h = 178 },
+        dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 423 * cfg.thin_pie.size / 4 },
         color_key = {
-            input = "#e96d4d",
-            output = secondary_col,
+            input = "#E446C4",
+            output = cfg.pie_chart_3,
         },
     }),
-    thin_percent_unspecified = make_mirror({
-        src = res_1440
-            and { x = 257, y = 879, w = 33, h = 25 }
-            or { x = 247, y = 859, w = 33, h = 25 },
-        dst = { x = thin_percent.x, y = thin_percent.y, w = 33 * thin_percent.size, h = 25 * thin_percent.size },
-        color_key = {
-            input = "#45cb65",
-            output = secondary_col,
-        },
-    }),
-
 
     tall_pie_all = make_mirror({
         src = { x = 44, y = 15978, w = 340, h = 221 },
-        dst = { x = tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 273 * tall_pie.size / 4 },
+        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 273 * cfg.tall_pie.size / 4 },
     }),
-    tall_pie_entities = make_mirror({
+    tall_pie_blockentities = make_mirror({
         src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
+        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
         color_key = {
-            input = "#E446C4",
-            output = secondary_col,
+            input = "#EC6E4E",
+            output = cfg.pie_chart_1,
         },
     }),
     tall_pie_unspecified = make_mirror({
         src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
+        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
         color_key = {
             input = "#46CE66",
-            output = secondary_col,
-        },
-    }),
-    tall_pie_blockentities = make_mirror({
-        src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
-        color_key = {
-            input = "#ec6e4e",
-            output = primary_col,
+            output = cfg.pie_chart_2,
         },
     }),
     tall_pie_destroyProgress = make_mirror({
         src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
+        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
         color_key = {
             input = "#CC6C46",
-            output = secondary_col,
+            output = cfg.pie_chart_2,
         },
     }),
     tall_pie_prepare = make_mirror({
         src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = tall_pie.x, y = tall_pie.y, w = 420 * tall_pie.size / 4, h = 423 * tall_pie.size / 4 },
+        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
         color_key = {
             input = "#464C46",
-            output = secondary_col,
+            output = cfg.pie_chart_2,
+        },
+    }),
+    tall_pie_entities = make_mirror({
+        src = { x = 44, y = 15978, w = 340, h = 178 },
+        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
+        color_key = {
+            input = "#E446C4",
+            output = cfg.pie_chart_3,
         },
     }),
 
+    thin_percent_all = make_mirror({
+        src = cfg.res_1440
+            and { x = 257, y = 879, w = 33, h = 25 }
+            or { x = 247, y = 859, w = 33, h = 25 },
+        dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
+    }),
+    thin_percent_blockentities = make_mirror({
+        src = cfg.res_1440
+            and { x = 257, y = 879, w = 33, h = 25 }
+            or { x = 247, y = 859, w = 33, h = 25 },
+        dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
+        color_key = {
+            input = "#E96D4D",
+            output = cfg.text_col,
+        },
+    }),
+    thin_percent_unspecified = make_mirror({
+        src = cfg.res_1440
+            and { x = 257, y = 879, w = 33, h = 25 }
+            or { x = 247, y = 859, w = 33, h = 25 },
+        dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
+        color_key = {
+            input = "#45CB65",
+            output = cfg.text_col,
+        },
+    }),
 
     tall_percent_all = make_mirror({
         src = { x = 291, y = 16163, w = 33, h = 25 },
-        dst = { x = tall_percent.x, y = tall_percent.y, w = 33 * tall_percent.size, h = 25 * tall_percent.size },
+        dst = { x = cfg.tall_percent.x, y = cfg.tall_percent.y, w = 33 * cfg.tall_percent.size, h = 25 * cfg.tall_percent.size },
     }),
     tall_percent_blockentities = make_mirror({
         src = { x = 291, y = 16163, w = 33, h = 25 },
-        dst = { x = tall_percent.x, y = tall_percent.y, w = 33 * tall_percent.size, h = 25 * tall_percent.size },
+        dst = { x = cfg.tall_percent.x, y = cfg.tall_percent.y, w = 33 * cfg.tall_percent.size, h = 25 * cfg.tall_percent.size },
         color_key = {
-            input = "#e96d4d",
-            output = secondary_col,
+            input = "#E96D4D",
+            output = cfg.text_col,
         },
     }),
     tall_percent_unspecified = make_mirror({
         src = { x = 291, y = 16163, w = 33, h = 25 },
-        dst = { x = tall_percent.x, y = tall_percent.y, w = 33 * tall_percent.size, h = 25 * tall_percent.size },
+        dst = { x = cfg.tall_percent.x, y = cfg.tall_percent.y, w = 33 * cfg.tall_percent.size, h = 25 * cfg.tall_percent.size },
         color_key = {
-            input = "#45cb65",
-            output = secondary_col,
+            input = "#45CB65",
+            output = cfg.text_col,
         },
     }),
 
-
     eye_measure = make_mirror({
-        src = stretched_measure
+        src = cfg.stretched_measure
             and { x = 177, y = 7902, w = 30, h = 580 }
             or { x = 162, y = 7902, w = 60, h = 580 },
-        dst = res_1440
+        dst = cfg.res_1440
             and { x = 94, y = 470, w = 900, h = 500 }
             or { x = 30, y = 340, w = 700, h = 400 },
     }),
 }
 
 
---*********************************************************************************************** BOATEYE
+-- ==== IMAGES ====
 local make_image = function(path, dst)
     local this = nil
 
@@ -310,53 +274,52 @@ end
 
 local images = {
     measuring_overlay = make_image(overlay_path, {
-        dst = res_1440
+        dst = cfg.res_1440
             and { x = 94, y = 470, w = 900, h = 500 }
             or { x = 30, y = 340, w = 700, h = 400 },
     }),
     stretched_overlay = make_image(stretched_overlay_path, {
-        dst = res_1440
+        dst = cfg.res_1440
             and { x = 94, y = 470, w = 900, h = 500 }
             or { x = 30, y = 340, w = 700, h = 400 },
     }),
     tall_overlay = make_image(tall_overlay_path, {
-        dst = res_1440
+        dst = cfg.res_1440
             and { x = 0, y = 0, w = 2560, h = 1440 }
             or { x = 0, y = 0, w = 1920, h = 1080 },
     }),
     thin_overlay = make_image(thin_overlay_path, {
-        dst = res_1440
+        dst = cfg.res_1440
             and { x = 0, y = 0, w = 2560, h = 1440 }
             or { x = 0, y = 0, w = 1920, h = 1080 },
     }),
     wide_overlay = make_image(wide_overlay_path, {
-        dst = res_1440
+        dst = cfg.res_1440
             and { x = 0, y = 0, w = 2560, h = 1440 }
             or { x = 0, y = 0, w = 1920, h = 1080 },
     }),
-
 }
 
 
---*********************************************************************************************** MANAGING MIRRORS
-local show_mirrors = function(eye, f3, tall, thin, wide)
+-- ==== OBJECT MANAGEMENT ====
+local show_mirrors = function(f3, tall, thin, wide)
     images.tall_overlay(tall)
     images.thin_overlay(thin)
     images.wide_overlay(wide)
 
-    mirrors.eye_measure(eye)
-    if stretched_measure then
-        images.stretched_overlay(eye)
+    mirrors.eye_measure(tall)
+    if cfg.stretched_measure then
+        images.stretched_overlay(tall)
     else
-        images.measuring_overlay(eye)
+        images.measuring_overlay(tall)
     end
 
-    if e_count.enabled then
+    if cfg.e_count.enabled then
         mirrors.e_counter(f3)
     end
 
-    if thin_pie.enabled then
-        if thin_pie.colorkey then
+    if cfg.thin_pie.enabled then
+        if cfg.thin_pie.colorkey then
             mirrors.thin_pie_entities(thin)
             mirrors.thin_pie_unspecified(thin)
             mirrors.thin_pie_blockentities(thin)
@@ -367,13 +330,13 @@ local show_mirrors = function(eye, f3, tall, thin, wide)
         end
     end
 
-    if thin_percent.enabled then
+    if cfg.thin_percent.enabled then
         mirrors.thin_percent_blockentities(thin)
         mirrors.thin_percent_unspecified(thin)
     end
 
-    if tall_pie.enabled then
-        if tall_pie.colorkey then
+    if cfg.tall_pie.enabled then
+        if cfg.tall_pie.colorkey then
             mirrors.tall_pie_entities(tall)
             mirrors.tall_pie_unspecified(tall)
             mirrors.tall_pie_blockentities(tall)
@@ -384,64 +347,73 @@ local show_mirrors = function(eye, f3, tall, thin, wide)
         end
     end
 
-    if tall_percent.enabled then
+    if cfg.tall_percent.enabled then
         mirrors.tall_percent_blockentities(tall)
         mirrors.tall_percent_unspecified(tall)
     end
 end
 
 
---*********************************************************************************************** STATES
+-- ==== RESIZING STATES ====
 local thin_enable = function()
-    show_mirrors(false, true, false, true, false)
+    show_mirrors(true, false, true, false)
+    thin_active = true
+    if cfg.sens_change.enabled then
+        waywall.set_sensitivity(cfg.sens_change.normal)
+    end
 end
 
 local tall_enable = function()
-    show_mirrors(true, true, true, false, false)
-    if sens_change.enabled then
-        waywall.set_sensitivity(sens_change.tall)
+    show_mirrors(true, true, false, false)
+    if cfg.sens_change.enabled and not thin_active then
+        waywall.set_sensitivity(cfg.sens_change.tall)
     end
+    thin_active = false
 end
 local wide_enable = function()
-    show_mirrors(false, false, false, false, true)
+    show_mirrors(false, false, false, true)
+    if cfg.sens_change.enabled then
+        waywall.set_sensitivity(cfg.sens_change.normal)
+    end
+    thin_active = false
 end
 
 local res_disable = function()
-    show_mirrors(false, false, false, false, false)
-end
-
-local tall_disable = function()
-    show_mirrors(false, false, false, false, false)
-    if sens_change.enabled then
-        waywall.set_sensitivity(sens_change.normal)
+    show_mirrors(false, false, false, false)
+    if cfg.sens_change.enabled then
+        waywall.set_sensitivity(cfg.sens_change.normal)
     end
+    thin_active = false
 end
 
---*********************************************************************************************** RESOLUTIONS
+-- ==== RESOLUTIONS ====
 local make_res = function(width, height, enable, disable)
     return function()
         local active_width, active_height = waywall.active_res()
 
         if active_width == width and active_height == height then
+            if cfg.enable_resize_animations then
+                os.execute('echo "0x0" > ~/.resetti_state')
+                waywall.sleep(17)
+            end
             waywall.set_resolution(0, 0)
             disable()
         else
+            if cfg.enable_resize_animations then
+                os.execute(string.format('echo "%dx%d" > ~/.resetti_state', width, height))
+                waywall.sleep(17)
+            end
             waywall.set_resolution(width, height)
             enable()
         end
     end
 end
 
-
 local resolutions = {
-    thin = make_res(res_1440 and 350 or 340, res_1440 and 1100 or 1080, thin_enable, res_disable),
-    tall = make_res(384, 16384, tall_enable, tall_disable),
-    wide = make_res(res_1440 and 2560 or 1920, res_1440 and 400 or 300, wide_enable, res_disable),
+    thin = make_res(cfg.res_1440 and 350 or 340, cfg.res_1440 and 1100 or 1080, thin_enable, res_disable),
+    tall = make_res(384, 16384, tall_enable, res_disable),
+    wide = make_res(cfg.res_1440 and 2560 or 1920, cfg.res_1440 and 400 or 300, wide_enable, res_disable),
 }
-
-local rebind_text = nil
-
---*********************************************************************************************** KEYBINDS
 
 local function resize_helper(mode, run)
     return function()
@@ -455,13 +427,15 @@ local function resize_helper(mode, run)
     end
 end
 
+
+-- ==== KEYBINDS ====
 config.actions = {
 
-    [thin.key] = resize_helper(thin, function() resolutions.thin() end),
-    [wide.key] = resize_helper(wide, function() resolutions.wide() end),
-    [tall.key] = resize_helper(tall, function() resolutions.tall() end),
+    [cfg.thin.key] = resize_helper(cfg.thin, function() resolutions.thin() end),
+    [cfg.wide.key] = resize_helper(cfg.wide, function() resolutions.wide() end),
+    [cfg.tall.key] = resize_helper(cfg.tall, function() resolutions.tall() end),
 
-    [toggle_ninbot_key] = function()
+    [cfg.toggle_ninbot_key] = function()
         if not is_ninb_running() then
             waywall.exec("java -Dawt.useSystemAAFontSettings=on -jar " .. nb_path)
             waywall.show_floating(true)
@@ -470,26 +444,37 @@ config.actions = {
         end
     end,
 
-    [toggle_fullscreen_key] = waywall.toggle_fullscreen,
+    [cfg.toggle_fullscreen_key] = waywall.toggle_fullscreen,
 
-    [launch_paceman_key] = function()
+    [cfg.launch_paceman_key] = function()
         exec_pacem()
+        if is_pacem_running() then
+            print("Paceman Running")
+        end
     end,
 
-    [toggle_remaps_key] = function()
+    [cfg.toggle_remaps_key] = function()
         if rebind_text then
             rebind_text:close()
             rebind_text = nil
         end
-        remaps_active = not remaps_active
-        waywall.set_remaps(remaps_active and keyboard_remaps or other_remaps)
-        if not remaps_active then
-            rebind_text = waywall.text(remaps_text_config.text, remaps_text_config.x, remaps_text_config.y, "#FFFFFF",
-                remaps_text_config.size)
+        if remaps_active then
+            remaps_active = false
+            waywall.set_remaps(other_remaps)
+            if cfg.remaps_config.enabled then waywall.set_keymap({ layout = "us" }) end
+            rebind_text = waywall.text(cfg.remaps_text_config.text,
+                {
+                    x = cfg.remaps_text_config.x,
+                    y = cfg.remaps_text_config.y,
+                    color = cfg.remaps_text_config.color,
+                    size = cfg.remaps_text_config.size
+                })
+        else
+            remaps_active = true
+            waywall.set_remaps(keyboard_remaps)
+            if cfg.remaps_config.enabled then waywall.set_keymap({ layout = cfg.remaps_config.layout_name }) end
         end
     end,
-
-
 }
 
 
