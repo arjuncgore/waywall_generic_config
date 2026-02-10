@@ -423,7 +423,7 @@ local function resize_helper(mode, run)
         if mode.f3_safe and waywall.get_key("F3") then
             return false
         end
-        run()
+        return run()
     end
 end
 
