@@ -415,8 +415,9 @@ local resolutions = {
     wide = make_res(cfg.res_1440 and 2560 or 1920, cfg.res_1440 and 400 or 300, wide_enable, res_disable),
 }
 
-local function resize_helper(mode, run)
-    return function()
+
+local function resize_helper(mode, run, ingame_only)
+    local resize = function()
         if not remaps_active then
             return false
         end
@@ -425,15 +426,21 @@ local function resize_helper(mode, run)
         end
         return run()
     end
+
+    if ingame_only then
+        return helpers.ingame_only(resize)
+    end
+
+    return resize
 end
 
 
 -- ==== KEYBINDS ====
 config.actions = {
 
-    [cfg.thin.key] = resize_helper(cfg.thin, function() resolutions.thin() end),
-    [cfg.wide.key] = resize_helper(cfg.wide, function() resolutions.wide() end),
-    [cfg.tall.key] = resize_helper(cfg.tall, function() resolutions.tall() end),
+    [cfg.thin.key] = resize_helper(cfg.thin, function() resolutions.thin() end, cfg.thin.ingame_only),
+    [cfg.wide.key] = resize_helper(cfg.wide, function() resolutions.wide() end, cfg.wide.ingame_only),
+    [cfg.tall.key] = resize_helper(cfg.tall, function() resolutions.tall() end, cfg.tall.ingame_only),
 
     [cfg.toggle_ninbot_key] = function()
         if not is_ninb_running() then
