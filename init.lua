@@ -427,7 +427,7 @@ local function resize_helper(mode, run, ingame_only)
         return run()
     end
 
-    if waywall.active_res().width == 0 and ingame_only then
+    if waywall.active_res() == 0 and ingame_only then
         return helpers.ingame_only(resize)
     end
 
