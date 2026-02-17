@@ -38,7 +38,7 @@ return {
 
     
     -- ==== KEYBOARD ====
-    xkb_config = { -- set options to nil if unwanted
+    xkb_config = { -- set any setting to nil if unwanted
         enabled = false,
         layout = "mc", -- ~/.config/xkb/symbols/mc
         rules = nil,  -- ~/.config/xkb/rules/...
