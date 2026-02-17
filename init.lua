@@ -44,7 +44,6 @@ local config = {
         debug = false,
         jit = false,
         tearing = false,
-        scene_add_text = true,
     },
 }
 
