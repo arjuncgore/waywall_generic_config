@@ -27,7 +27,11 @@ local thin_active = false
 -- ==== CONFIG TABLE ====
 local config = {
     input = {
-        layout = (cfg.remaps_config.enabled and cfg.remaps_config.layout_name) or "us",
+        layout = (cfg.xkb_config.enabled and cfg.xkb_config.layout) or nil,
+        rules = (cfg.xkb_config.enabled and cfg.xkb_config.rules) or nil,
+        variant = (cfg.xkb_config.enabled and cfg.xkb_config.variant) or nil,
+        options = (cfg.xkb_config.enabled and cfg.xkb_config.options) or nil,
+
         repeat_rate = 40,
         repeat_delay = 300,
         remaps = keyboard_remaps,
@@ -467,7 +471,16 @@ config.actions = {
         if remaps_active then
             remaps_active = false
             waywall.set_remaps(other_remaps)
-            if cfg.remaps_config.enabled then waywall.set_keymap({ layout = "us" }) end
+            
+            if cfg.xkb_config.enabled then
+                waywall.set_keymap({
+                    layout = nil,
+                    rules = nil,
+                    variant = nil,
+                    options = nil,
+                })
+            end
+
             rebind_text = waywall.text(cfg.remaps_text_config.text,
                 {
                     x = cfg.remaps_text_config.x,
@@ -478,7 +491,16 @@ config.actions = {
         else
             remaps_active = true
             waywall.set_remaps(keyboard_remaps)
-            if cfg.remaps_config.enabled then waywall.set_keymap({ layout = cfg.remaps_config.layout_name }) end
+            
+            if cfg.xkb_config.enabled then
+                waywall.set_keymap({
+                    layout = cfg.xkb_config.layout,
+                    rules = cfg.xkb_config.rules,
+                    variant = cfg.xkb_config.variant,
+                    options = cfg.xkb_config.options
+                })
+            end
+
         end
     end,
 }

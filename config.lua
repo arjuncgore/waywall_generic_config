@@ -36,11 +36,19 @@ return {
     toggle_ninbot_key = "*-apostrophe",
     toggle_remaps_key = "Insert",
 
+    
+    -- ==== KEYBOARD ====
+    xkb_config = { -- set options to nil if unwanted
+        enabled = false,
+        layout = "mc", -- ~/.config/xkb/symbols/mc
+        rules = nil,  -- ~/.config/xkb/rules/...
+        variant = "basic",
+        options = "caps:none",
+    },
+    remaps_text_config = { text = "chat mode", x = 100, y = 100, size = 2, color = "#000000" },
+
 
     -- ==== MISC ====
-    remaps_config = { layout_name = "mc", enabled = false }, -- ~/.config/xkb/symbols/mc
-    remaps_text_config = { text = "remaps off", x = 100, y = 100, size = 2, color = "#000000" },
-
     res_1440 = false,
     sens_change = { enabled = false, normal = 1.0, tall = 0.1 }, -- make sure raw input is off
     enable_resize_animations = false,
