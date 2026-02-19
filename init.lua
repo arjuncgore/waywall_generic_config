@@ -58,17 +58,8 @@ local is_ninb_running = function()
     handle:close()
     return result ~= nil
 end
-
-local exec_pacem = function()
-    if not is_pacem_running() then
-        waywall.exec("java -jar " .. pacem_path .. " --nogui")
-    end
-end
-
-
--- ==== NINJABRAIN ====
-local is_ninb_running = function()
-    local handle = io.popen("ps aux | grep '[N]injabrain-Bot.*\\.jar'")
+local is_pacem_running = function()
+    local handle = io.popen("ps aux | grep '[p]aceman-tracker.*\\.jar'")
     local result = handle:read("*l")
     handle:close()
     return result ~= nil
