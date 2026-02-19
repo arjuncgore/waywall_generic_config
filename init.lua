@@ -152,7 +152,6 @@ if cfg.thin_percent.enabled then
     end
 end
 
-
 -- tall mirrors
 if cfg.tall_pie.enabled then
     if cfg.tall_pie.colorkey then
@@ -202,9 +201,7 @@ helpers.res_mirror(
     TALL_W, TALL_H
 )
 
-
 -- ==== IMAGES ====
-
 helpers.res_image(
     cfg.stretched_measure and stretched_overlay_path or overlay_path,
     {
@@ -242,7 +239,6 @@ helpers.res_image(
     THIN_W, THIN_H
 )
 
-
 -- ==== RESIZING STATES ====
 local thin_enable = function()
     thin_active = true
@@ -250,7 +246,6 @@ local thin_enable = function()
         waywall.set_sensitivity(cfg.sens_change.normal)
     end
 end
-
 local tall_enable = function()
     if cfg.sens_change.enabled and not thin_active then
         waywall.set_sensitivity(cfg.sens_change.tall)
@@ -263,7 +258,6 @@ local wide_enable = function()
     end
     thin_active = false
 end
-
 local res_disable = function()
     if cfg.sens_change.enabled then
         waywall.set_sensitivity(cfg.sens_change.normal)
@@ -300,7 +294,6 @@ local resolutions = {
     wide = make_res(WIDE_W, WIDE_H, wide_enable, res_disable),
 }
 
-
 local function resize_helper(mode, run, ingame_only)
     local resize = function()
         if not remaps_active then
@@ -318,7 +311,6 @@ local function resize_helper(mode, run, ingame_only)
 
     return resize
 end
-
 
 -- ==== KEYBINDS ====
 config.actions = {
@@ -388,6 +380,5 @@ config.actions = {
         end
     end,
 }
-
 
 return config
