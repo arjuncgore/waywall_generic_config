@@ -76,290 +76,185 @@ local is_ninb_running = function()
 end
 
 -- ==== MIRRORS ====
-local make_mirror = function(options)
-    local this = nil
+-- colors
+local pie_colors = {
+    { input = "#EC6E4E", output = cfg.pie_chart_1 },
+    { input = "#46CE66", output = cfg.pie_chart_2 },
+    { input = "#CC6C46", output = cfg.pie_chart_2 },
+    { input = "#464C46", output = cfg.pie_chart_2 },
+    { input = "#E446C4", output = cfg.pie_chart_3 }
+}
+local percentage_colors = {
+    { input = "#E96D4D", output = cfg.text_col },
+    { input = "#45CB65", output = cfg.text_col }
+}
 
-    return function(enable)
-        if enable and not this then
-            this = waywall.mirror(options)
-        elseif this and not enable then
-            this:close()
-            this = nil
-        end
-    end
-end
+-- resolutions
+local THIN_W, THIN_H = (cfg.res_1440 and 350 or 340), (cfg.res_1440 and 1100 or 1080)
+local WIDE_W, WIDE_H = (cfg.res_1440 and 2560 or 1920), (cfg.res_1440 and 400 or 300)
+local TALL_W, TALL_H = 384, 16384
 
-local mirrors = {
-    e_counter = make_mirror({
+-- thin mirrors
+if cfg.e_count.enabled then
+    helpers.res_mirror(
+        {
         src = { x = 13, y = 37, w = 37, h = 9 },
         dst = { x = cfg.e_count.x, y = cfg.e_count.y, w = 37 * cfg.e_count.size, h = 9 * cfg.e_count.size },
         color_key = cfg.e_count.colorkey and {
             input = "#DDDDDD",
             output = cfg.text_col,
         } or nil,
-    }),
-
-    thin_pie_all = make_mirror({
-        src = cfg.res_1440
-            and { x = 10, y = 694, w = 340, h = 221 }
-            or { x = 0, y = 674, w = 340, h = 221 },
-        dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 273 * cfg.thin_pie.size / 4 },
-    }),
-
-    thin_pie_blockentities = make_mirror({
-        src = cfg.res_1440
-            and { x = 10, y = 694, w = 340, h = 178 }
-            or { x = 0, y = 674, w = 340, h = 178 },
-        dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 423 * cfg.thin_pie.size / 4 },
-        color_key = {
-            input = "#EC6E4E",
-            output = cfg.pie_chart_1,
-        },
-    }),
-    thin_pie_unspecified = make_mirror({
-        src = cfg.res_1440
-            and { x = 10, y = 694, w = 340, h = 178 }
-            or { x = 0, y = 674, w = 340, h = 178 },
-        dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 423 * cfg.thin_pie.size / 4 },
-        color_key = {
-            input = "#46CE66",
-            output = cfg.pie_chart_2,
-        },
-    }),
-    thin_pie_destroyProgress = make_mirror({
-        src = cfg.res_1440
-            and { x = 10, y = 694, w = 340, h = 178 }
-            or { x = 0, y = 674, w = 340, h = 178 },
-        dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 423 * cfg.thin_pie.size / 4 },
-        color_key = {
-            input = "#CC6C46",
-            output = cfg.pie_chart_2,
-        },
-    }),
-    thin_pie_prepare = make_mirror({
-        src = cfg.res_1440
-            and { x = 10, y = 694, w = 340, h = 178 }
-            or { x = 0, y = 674, w = 340, h = 178 },
-        dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 423 * cfg.thin_pie.size / 4 },
-        color_key = {
-            input = "#464C46",
-            output = cfg.pie_chart_2,
-        },
-    }),
-    thin_pie_entities = make_mirror({
-        src = cfg.res_1440
-            and { x = 10, y = 694, w = 340, h = 178 }
-            or { x = 0, y = 674, w = 340, h = 178 },
-        dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 423 * cfg.thin_pie.size / 4 },
-        color_key = {
-            input = "#E446C4",
-            output = cfg.pie_chart_3,
-        },
-    }),
-
-    tall_pie_all = make_mirror({
-        src = { x = 44, y = 15978, w = 340, h = 221 },
-        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 273 * cfg.tall_pie.size / 4 },
-    }),
-    tall_pie_blockentities = make_mirror({
-        src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
-        color_key = {
-            input = "#EC6E4E",
-            output = cfg.pie_chart_1,
-        },
-    }),
-    tall_pie_unspecified = make_mirror({
-        src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
-        color_key = {
-            input = "#46CE66",
-            output = cfg.pie_chart_2,
-        },
-    }),
-    tall_pie_destroyProgress = make_mirror({
-        src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
-        color_key = {
-            input = "#CC6C46",
-            output = cfg.pie_chart_2,
-        },
-    }),
-    tall_pie_prepare = make_mirror({
-        src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
-        color_key = {
-            input = "#464C46",
-            output = cfg.pie_chart_2,
-        },
-    }),
-    tall_pie_entities = make_mirror({
-        src = { x = 44, y = 15978, w = 340, h = 178 },
-        dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
-        color_key = {
-            input = "#E446C4",
-            output = cfg.pie_chart_3,
-        },
-    }),
-
-    thin_percent_all = make_mirror({
-        src = cfg.res_1440
-            and { x = 257, y = 879, w = 33, h = 25 }
-            or { x = 247, y = 859, w = 33, h = 25 },
-        dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
-    }),
-    thin_percent_blockentities = make_mirror({
-        src = cfg.res_1440
-            and { x = 257, y = 879, w = 33, h = 25 }
-            or { x = 247, y = 859, w = 33, h = 25 },
-        dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
-        color_key = {
-            input = "#E96D4D",
+    },
+    THIN_W, THIN_H
+    )
+    helpers.res_mirror(
+        {
+        src = { x = 13, y = 37, w = 37, h = 9 },
+        dst = { x = cfg.e_count.x, y = cfg.e_count.y, w = 37 * cfg.e_count.size, h = 9 * cfg.e_count.size },
+        color_key = cfg.e_count.colorkey and {
+            input = "#DDDDDD",
             output = cfg.text_col,
-        },
-    }),
-    thin_percent_unspecified = make_mirror({
-        src = cfg.res_1440
-            and { x = 257, y = 879, w = 33, h = 25 }
-            or { x = 247, y = 859, w = 33, h = 25 },
-        dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
-        color_key = {
-            input = "#45CB65",
-            output = cfg.text_col,
-        },
-    }),
+        } or nil,
+    },
+    TALL_W, TALL_H
+    )
+end
 
-    tall_percent_all = make_mirror({
-        src = { x = 291, y = 16163, w = 33, h = 25 },
-        dst = { x = cfg.tall_percent.x, y = cfg.tall_percent.y, w = 33 * cfg.tall_percent.size, h = 25 * cfg.tall_percent.size },
-    }),
-    tall_percent_blockentities = make_mirror({
-        src = { x = 291, y = 16163, w = 33, h = 25 },
-        dst = { x = cfg.tall_percent.x, y = cfg.tall_percent.y, w = 33 * cfg.tall_percent.size, h = 25 * cfg.tall_percent.size },
-        color_key = {
-            input = "#E96D4D",
-            output = cfg.text_col,
+if cfg.thin_pie.enabled then
+    if cfg.thin_pie.colorkey then
+        for _, ck in ipairs(pie_colors) do
+            helpers.res_mirror(
+                {
+                    src = cfg.res_1440
+                        and { x = 10, y = 694, w = 340, h = 178 }
+                        or { x = 0, y = 674, w = 340, h = 178 },
+                    dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 423 * cfg.thin_pie.size / 4 },
+                    color_key = ck,
+                },
+                THIN_W, THIN_H
+            )
+        end
+    else
+        helpers.res_mirror(
+            {
+            src = cfg.res_1440
+                and { x = 10, y = 694, w = 340, h = 221 }
+                or { x = 0, y = 674, w = 340, h = 221 },
+            dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 273 * cfg.thin_pie.size / 4 },
         },
-    }),
-    tall_percent_unspecified = make_mirror({
-        src = { x = 291, y = 16163, w = 33, h = 25 },
-        dst = { x = cfg.tall_percent.x, y = cfg.tall_percent.y, w = 33 * cfg.tall_percent.size, h = 25 * cfg.tall_percent.size },
-        color_key = {
-            input = "#45CB65",
-            output = cfg.text_col,
-        },
-    }),
+        THIN_W, THIN_H
+        )
+    end
+end
 
-    eye_measure = make_mirror({
-        src = cfg.stretched_measure
-            and { x = 177, y = 7902, w = 30, h = 580 }
-            or { x = 162, y = 7902, w = 60, h = 580 },
-        dst = cfg.res_1440
-            and { x = 94, y = 470, w = 900, h = 500 }
-            or { x = 30, y = 340, w = 700, h = 400 },
-    }),
-}
+if cfg.thin_percent.enabled then
+    for _, ck in ipairs(percentage_colors) do
+        helpers.res_mirror(
+            {
+                src = cfg.res_1440
+                    and { x = 257, y = 879, w = 33, h = 25 }
+                    or { x = 247, y = 859, w = 33, h = 25 },
+                dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
+                color_key = ck,
+            },
+            THIN_W, THIN_H
+        )
+    end
+end
+
+
+-- tall mirrors
+if cfg.tall_pie.enabled then
+    if cfg.tall_pie.colorkey then
+        for _, ck in ipairs(pie_colors) do
+            helpers.res_mirror(
+                {
+                src = { x = 44, y = 15978, w = 340, h = 178 },
+                dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
+                color_key = ck,
+                },
+                TALL_W, TALL_H
+            )
+        end
+    else
+        helpers.res_mirror(
+            {
+                src = { x = 44, y = 15978, w = 340, h = 221 },
+                dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 273 * cfg.tall_pie.size / 4 },
+            },
+        TALL_W, TALL_H
+        )
+    end
+end
+
+if cfg.tall_percent.enabled then
+    for _, ck in ipairs(percentage_colors) do
+        helpers.res_mirror(
+            {
+            src = { x = 291, y = 16163, w = 33, h = 25 },
+            dst = { x = cfg.tall_percent.x, y = cfg.tall_percent.y, w = 33 * cfg.tall_percent.size, h = 25 * cfg.tall_percent.size },
+            color_key = ck,
+            },
+            TALL_W, TALL_H
+        )
+    end
+end
+
+helpers.res_mirror(
+    {
+    src = cfg.stretched_measure
+        and { x = 177, y = 7902, w = 30, h = 580 }
+        or { x = 162, y = 7902, w = 60, h = 580 },
+    dst = cfg.res_1440
+        and { x = 94, y = 470, w = 900, h = 500 }
+        or { x = 30, y = 340, w = 700, h = 400 },
+    },
+    TALL_W, TALL_H
+)
 
 
 -- ==== IMAGES ====
-local make_image = function(path, dst)
-    local this = nil
 
-    return function(enable)
-        if enable and not this then
-            this = waywall.image(path, dst)
-        elseif this and not enable then
-            this:close()
-            this = nil
-        end
-    end
-end
-
-local images = {
-    measuring_overlay = make_image(overlay_path, {
+helpers.res_image(
+    cfg.stretched_measure and stretched_overlay_path or overlay_path,
+    {
         dst = cfg.res_1440
             and { x = 94, y = 470, w = 900, h = 500 }
             or { x = 30, y = 340, w = 700, h = 400 },
-    }),
-    stretched_overlay = make_image(stretched_overlay_path, {
-        dst = cfg.res_1440
-            and { x = 94, y = 470, w = 900, h = 500 }
-            or { x = 30, y = 340, w = 700, h = 400 },
-    }),
-    tall_overlay = make_image(tall_overlay_path, {
-        dst = cfg.res_1440
-            and { x = 0, y = 0, w = 2560, h = 1440 }
-            or { x = 0, y = 0, w = 1920, h = 1080 },
-    }),
-    thin_overlay = make_image(thin_overlay_path, {
+    },
+    TALL_W, TALL_H
+)
+helpers.res_image(
+    tall_overlay_path,
+    {
         dst = cfg.res_1440
             and { x = 0, y = 0, w = 2560, h = 1440 }
             or { x = 0, y = 0, w = 1920, h = 1080 },
-    }),
-    wide_overlay = make_image(wide_overlay_path, {
+    },
+    TALL_W, TALL_H
+)
+helpers.res_image(
+    wide_overlay_path,
+    {
         dst = cfg.res_1440
             and { x = 0, y = 0, w = 2560, h = 1440 }
             or { x = 0, y = 0, w = 1920, h = 1080 },
-    }),
-}
-
-
--- ==== OBJECT MANAGEMENT ====
-local show_mirrors = function(f3, tall, thin, wide)
-    images.tall_overlay(tall)
-    images.thin_overlay(thin)
-    images.wide_overlay(wide)
-
-    mirrors.eye_measure(tall)
-    if cfg.stretched_measure then
-        images.stretched_overlay(tall)
-    else
-        images.measuring_overlay(tall)
-    end
-
-    if cfg.e_count.enabled then
-        mirrors.e_counter(f3)
-    end
-
-    if cfg.thin_pie.enabled then
-        if cfg.thin_pie.colorkey then
-            mirrors.thin_pie_entities(thin)
-            mirrors.thin_pie_unspecified(thin)
-            mirrors.thin_pie_blockentities(thin)
-            mirrors.thin_pie_destroyProgress(thin)
-            mirrors.thin_pie_prepare(thin)
-        else
-            mirrors.thin_pie_all(thin)
-        end
-    end
-
-    if cfg.thin_percent.enabled then
-        mirrors.thin_percent_blockentities(thin)
-        mirrors.thin_percent_unspecified(thin)
-    end
-
-    if cfg.tall_pie.enabled then
-        if cfg.tall_pie.colorkey then
-            mirrors.tall_pie_entities(tall)
-            mirrors.tall_pie_unspecified(tall)
-            mirrors.tall_pie_blockentities(tall)
-            mirrors.tall_pie_destroyProgress(tall)
-            mirrors.tall_pie_prepare(tall)
-        else
-            mirrors.tall_pie_all(tall)
-        end
-    end
-
-    if cfg.tall_percent.enabled then
-        mirrors.tall_percent_blockentities(tall)
-        mirrors.tall_percent_unspecified(tall)
-    end
-end
+    },
+    WIDE_W, WIDE_H
+)
+helpers.res_image(
+    thin_overlay_path,
+    {
+        dst = cfg.res_1440
+            and { x = 0, y = 0, w = 2560, h = 1440 }
+            or { x = 0, y = 0, w = 1920, h = 1080 },
+    },
+    THIN_W, THIN_H
+)
 
 
 -- ==== RESIZING STATES ====
 local thin_enable = function()
-    show_mirrors(true, false, true, false)
     thin_active = true
     if cfg.sens_change.enabled then
         waywall.set_sensitivity(cfg.sens_change.normal)
@@ -367,14 +262,12 @@ local thin_enable = function()
 end
 
 local tall_enable = function()
-    show_mirrors(true, true, false, false)
     if cfg.sens_change.enabled and not thin_active then
         waywall.set_sensitivity(cfg.sens_change.tall)
     end
     thin_active = false
 end
 local wide_enable = function()
-    show_mirrors(false, false, false, true)
     if cfg.sens_change.enabled then
         waywall.set_sensitivity(cfg.sens_change.normal)
     end
@@ -382,7 +275,6 @@ local wide_enable = function()
 end
 
 local res_disable = function()
-    show_mirrors(false, false, false, false)
     if cfg.sens_change.enabled then
         waywall.set_sensitivity(cfg.sens_change.normal)
     end
@@ -413,9 +305,9 @@ local make_res = function(width, height, enable, disable)
 end
 
 local resolutions = {
-    thin = make_res(cfg.res_1440 and 350 or 340, cfg.res_1440 and 1100 or 1080, thin_enable, res_disable),
-    tall = make_res(384, 16384, tall_enable, res_disable),
-    wide = make_res(cfg.res_1440 and 2560 or 1920, cfg.res_1440 and 400 or 300, wide_enable, res_disable),
+    thin = make_res(THIN_W, THIN_H, thin_enable, res_disable),
+    tall = make_res(TALL_W, TALL_H, tall_enable, res_disable),
+    wide = make_res(WIDE_W, WIDE_H, wide_enable, res_disable),
 }
 
 
