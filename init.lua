@@ -51,10 +51,9 @@ local config = {
     },
 }
 
-
--- ==== PACEMAN ====
-local is_pacem_running = function()
-    local handle = io.popen("pgrep -f 'paceman..*'")
+-- ==== TOOLS ====
+local is_ninb_running = function()
+    local handle = io.popen("ps aux | grep '[N]injabrain-Bot.*\\.jar'")
     local result = handle:read("*l")
     handle:close()
     return result ~= nil
@@ -337,21 +336,23 @@ config.actions = {
     [cfg.wide.key] = resize_helper(cfg.wide, function() resolutions.wide() end, cfg.wide.ingame_only),
     [cfg.tall.key] = resize_helper(cfg.tall, function() resolutions.tall() end, cfg.tall.ingame_only),
 
+    [cfg.toggle_fullscreen_key] = waywall.toggle_fullscreen,
+
+    [cfg.launch_paceman_key] = function()
+        if is_pacem_running() then
+            print("Paceman Already Running")
+        else
+            waywall.exec("java -jar " .. pacem_path .. " --nogui")
+            print("Paceman Running")
+        end
+    end,
+
     [cfg.toggle_ninbot_key] = function()
         if not is_ninb_running() then
             waywall.exec("java -Dawt.useSystemAAFontSettings=on -jar " .. nb_path)
             waywall.show_floating(true)
         else
             helpers.toggle_floating()
-        end
-    end,
-
-    [cfg.toggle_fullscreen_key] = waywall.toggle_fullscreen,
-
-    [cfg.launch_paceman_key] = function()
-        exec_pacem()
-        if is_pacem_running() then
-            print("Paceman Running")
         end
     end,
 
