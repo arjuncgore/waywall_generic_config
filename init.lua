@@ -315,9 +315,9 @@ end
 -- ==== KEYBINDS ====
 config.actions = {
 
-    [cfg.thin.key] = resize_helper(cfg.thin, function() resolutions.thin() end, cfg.thin.ingame_only),
-    [cfg.wide.key] = resize_helper(cfg.wide, function() resolutions.wide() end, cfg.wide.ingame_only),
-    [cfg.tall.key] = resize_helper(cfg.tall, function() resolutions.tall() end, cfg.tall.ingame_only),
+    [cfg.thin.key] = resize_helper(cfg.thin, resolutions.thin, cfg.thin.ingame_only),
+    [cfg.wide.key] = resize_helper(cfg.wide, resolutions.wide, cfg.wide.ingame_only),
+    [cfg.tall.key] = resize_helper(cfg.tall, resolutions.tall, cfg.tall.ingame_only),
 
     [cfg.toggle_fullscreen_key] = waywall.toggle_fullscreen,
 
