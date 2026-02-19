@@ -8,8 +8,11 @@ return {
     pie_chart_2 = "#46CE66",
     pie_chart_3 = "#E446C4",
 
-    ninbot_anchor = "topright", -- topleft, top, topright, left, right, bottomleft, bottomright
-    ninbot_opacity = 1,         -- 0 to 1
+    ninbot_anchor = {
+        position = "topright", -- topleft, top, topright, left, right, bottomleft, bottomright
+        x = 0, y = 130, -- offset
+    },
+    ninbot_opacity = 1, -- 0 to 1
 
 
     -- ==== MIRRORS ====
@@ -23,7 +26,7 @@ return {
 
 
     -- ==== KEYBINDS ====
-    -- resolution change actions
+    -- resolution changes
     thin = { key = "*-Alt_L", f3_safe = false, ingame_only = true },
     wide = { key = "*-B", f3_safe = true, ingame_only = true },
     tall = { key = "*-F4", f3_safe = false, ingame_only = false },
