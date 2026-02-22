@@ -1,5 +1,7 @@
 -- ==== WAYWALL GENERIC CONFIG ====
 return {
+    debug_text = true,
+
     -- ==== LOOKS ====
     bg_col = "#000000",
     toggle_bg_picture = false,

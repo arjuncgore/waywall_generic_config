@@ -23,6 +23,15 @@ local stretched_overlay_path = waywall_config_path .. "resources/stretched_overl
 local remaps_active = true
 local rebind_text = nil
 local thin_active = false
+local keybinds_text = nil
+local debug_text1 = nil
+local debug_text2 = nil
+local debug_text3 = nil
+local debug_text4 = nil
+local debug_text = "Press Shift + I to show keybinds.\n\n" ..
+    "Look at the Github's README for a guide to config.\n\n" ..
+    "disable this message by setting\n" ..
+    "\'debug_text\' to false in ~/.config/waywall/config.lua\n"
 
 -- ==== CONFIG TABLE ====
 local config = {
@@ -252,6 +261,20 @@ helpers.res_image(
     THIN_W, THIN_H
 )
 
+-- ==== DEBUG TEXT ====
+waywall.listen("load", function()
+    if cfg.debug_text then
+        debug_text1 = waywall.text(debug_text,
+            { x = 10, y = 10, color = "#FFFF00", size = 3 })
+        debug_text2 = waywall.text(debug_text,
+            { x = 11, y = 11, color = "#FFFF00", size = 3 })
+        debug_text3 = waywall.text(debug_text,
+            { x = 13, y = 13, color = "#000000", size = 3 })
+        debug_text4 = waywall.text(debug_text,
+            { x = 14, y = 14, color = "#000000", size = 3 })
+    end
+end)
+
 -- ==== RESIZING STATES ====
 local thin_enable = function()
     thin_active = true
@@ -391,6 +414,38 @@ config.actions = {
             end
         end
     end,
+
+    ["Shift-I"] = function()
+        if keybinds_text then
+            keybinds_text:close()
+            keybinds_text = nil
+            return false
+        end
+        keybinds_text = waywall.text(
+            "KEYBINDS:\n" ..
+            "Thin = " .. cfg.thin.key .. "\n" ..
+            "Wide = " .. cfg.wide.key .. "\n" ..
+            "Tall = " .. cfg.tall.key .. "\n" ..
+            "Toggle Ninbot = " .. cfg.toggle_ninbot_key .. "\n" ..
+            "Launch paceman = " .. cfg.launch_paceman_key .. "\n" ..
+            "Fullscreen = " .. cfg.toggle_fullscreen_key .. "\n" ..
+            "  "
+
+
+            ,
+            { x = 10, y = 10, color = "#FFFFFF", size = 3 })
+        if debug_text1 and debug_text2 and debug_text3 and debug_text4 then
+            debug_text1:close()
+            debug_text1 = nil
+            debug_text2:close()
+            debug_text2 = nil
+            debug_text3:close()
+            debug_text3 = nil
+            debug_text4:close()
+            debug_text4 = nil
+        end
+    end
+
 }
 
 return config
