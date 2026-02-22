@@ -90,6 +90,7 @@ if cfg.e_count.enabled then
         {
         src = { x = 13, y = 37, w = 37, h = 9 },
         dst = { x = cfg.e_count.x, y = cfg.e_count.y, w = 37 * cfg.e_count.size, h = 9 * cfg.e_count.size },
+        depth = 2,
         color_key = cfg.e_count.colorkey and {
             input = "#DDDDDD",
             output = cfg.text_col,
@@ -101,6 +102,7 @@ if cfg.e_count.enabled then
         {
         src = { x = 13, y = 37, w = 37, h = 9 },
         dst = { x = cfg.e_count.x, y = cfg.e_count.y, w = 37 * cfg.e_count.size, h = 9 * cfg.e_count.size },
+        depth = 2,
         color_key = cfg.e_count.colorkey and {
             input = "#DDDDDD",
             output = cfg.text_col,
@@ -119,6 +121,7 @@ if cfg.thin_pie.enabled then
                         and { x = 10, y = 694, w = 340, h = 178 }
                         or { x = 0, y = 674, w = 340, h = 178 },
                     dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 423 * cfg.thin_pie.size / 4 },
+                    depth = 2,
                     color_key = ck,
                 },
                 THIN_W, THIN_H
@@ -130,6 +133,7 @@ if cfg.thin_pie.enabled then
             src = cfg.res_1440
                 and { x = 10, y = 694, w = 340, h = 221 }
                 or { x = 0, y = 674, w = 340, h = 221 },
+                depth = 2,
             dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 273 * cfg.thin_pie.size / 4 },
         },
         THIN_W, THIN_H
@@ -145,6 +149,7 @@ if cfg.thin_percent.enabled then
                     and { x = 257, y = 879, w = 33, h = 25 }
                     or { x = 247, y = 859, w = 33, h = 25 },
                 dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
+                depth = 3,
                 color_key = ck,
             },
             THIN_W, THIN_H
@@ -160,6 +165,7 @@ if cfg.tall_pie.enabled then
                 {
                 src = { x = 44, y = 15978, w = 340, h = 178 },
                 dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
+                depth = 2,
                 color_key = ck,
                 },
                 TALL_W, TALL_H
@@ -170,6 +176,7 @@ if cfg.tall_pie.enabled then
             {
                 src = { x = 44, y = 15978, w = 340, h = 221 },
                 dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 273 * cfg.tall_pie.size / 4 },
+                depth = 2,
             },
         TALL_W, TALL_H
         )
@@ -182,6 +189,7 @@ if cfg.tall_percent.enabled then
             {
             src = { x = 291, y = 16163, w = 33, h = 25 },
             dst = { x = cfg.tall_percent.x, y = cfg.tall_percent.y, w = 33 * cfg.tall_percent.size, h = 25 * cfg.tall_percent.size },
+            depth = 3,
             color_key = ck,
             },
             TALL_W, TALL_H
@@ -198,6 +206,7 @@ helpers.res_mirror(
         and { x = 94, y = 470, w = 900, h = 500 }
         or { x = 30, y = 340, w = 700, h = 400 },
     },
+    depth = 2,
     TALL_W, TALL_H
 )
 
@@ -208,6 +217,7 @@ helpers.res_image(
         dst = cfg.res_1440
             and { x = 94, y = 470, w = 900, h = 500 }
             or { x = 30, y = 340, w = 700, h = 400 },
+        depth = 3,
     },
     TALL_W, TALL_H
 )
@@ -217,6 +227,7 @@ helpers.res_image(
         dst = cfg.res_1440
             and { x = 0, y = 0, w = 2560, h = 1440 }
             or { x = 0, y = 0, w = 1920, h = 1080 },
+        depth = 1,
     },
     TALL_W, TALL_H
 )
@@ -226,6 +237,7 @@ helpers.res_image(
         dst = cfg.res_1440
             and { x = 0, y = 0, w = 2560, h = 1440 }
             or { x = 0, y = 0, w = 1920, h = 1080 },
+        depth = 1,
     },
     WIDE_W, WIDE_H
 )
@@ -235,6 +247,7 @@ helpers.res_image(
         dst = cfg.res_1440
             and { x = 0, y = 0, w = 2560, h = 1440 }
             or { x = 0, y = 0, w = 1920, h = 1080 },
+        depth = 1,
     },
     THIN_W, THIN_H
 )
