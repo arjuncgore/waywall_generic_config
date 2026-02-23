@@ -1,5 +1,7 @@
 -- ==== WAYWALL GENERIC CONFIG ====
 return {
+    debug_text = true,
+
     -- ==== LOOKS ====
     bg_col = "#000000",
     toggle_bg_picture = false,
@@ -10,9 +12,10 @@ return {
 
     ninbot_anchor = {
         position = "topright", -- topleft, top, topright, left, right, bottomleft, bottomright
-        x = 0, y = 130, -- offset
+        x = 0,
+        y = 130,               -- offset
     },
-    ninbot_opacity = 1, -- 0 to 1
+    ninbot_opacity = 1,        -- 0 to 1
 
 
     -- ==== MIRRORS ====
@@ -39,12 +42,12 @@ return {
     toggle_ninbot_key = "*-apostrophe",
     toggle_remaps_key = "Insert",
 
-    
+
     -- ==== KEYBOARD ====
-    xkb_config = { -- set any setting to nil if unwanted
+    xkb_config = {     -- set any setting to nil if unwanted
         enabled = false,
         layout = "mc", -- ~/.config/xkb/symbols/mc
-        rules = nil,  -- ~/.config/xkb/rules/...
+        rules = nil,   -- ~/.config/xkb/rules/...
         variant = "basic",
         options = "caps:none",
     },
