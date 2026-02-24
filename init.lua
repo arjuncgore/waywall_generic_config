@@ -130,9 +130,7 @@ if cfg.thin_pie.enabled then
         for _, ck in ipairs(pie_colors) do
             helpers.res_mirror(
                 {
-                    src = cfg.res_1440
-                        and { x = 10, y = 694, w = 340, h = 178 }
-                        or { x = 0, y = 674, w = 340, h = 178 },
+                    src = { x = cfg.thin_res[1] - 340, y = cfg.thin_res[2] - 406, w = 340, h = 178 },
                     dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 423 * cfg.thin_pie.size / 4 },
                     depth = 2,
                     color_key = ck,
@@ -143,9 +141,7 @@ if cfg.thin_pie.enabled then
     else
         helpers.res_mirror(
             {
-                src = cfg.res_1440
-                    and { x = 10, y = 694, w = 340, h = 221 }
-                    or { x = 0, y = 674, w = 340, h = 221 },
+                src = { x = cfg.thin_res[1] - 340, y = cfg.thin_res[2] - 406, w = 340, h = 221 },
                 dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 273 * cfg.thin_pie.size / 4 },
                 depth = 2,
             },
@@ -158,9 +154,7 @@ if cfg.thin_percent.enabled then
     for _, ck in ipairs(percentage_colors) do
         helpers.res_mirror(
             {
-                src = cfg.res_1440
-                    and { x = 257, y = 879, w = 33, h = 25 }
-                    or { x = 247, y = 859, w = 33, h = 25 },
+                src = { x = cfg.thin_res[1] - 93, y = cfg.thin_res[2] - 221, w = 33, h = 25 },
                 dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
                 depth = 3,
                 color_key = ck,
