@@ -3,6 +3,8 @@ return {
     debug_text = true,
 
     -- ==== LOOKS ====
+    resolution = { 1920, 1080 },
+
     bg_col = "#000000",
     toggle_bg_picture = false,
     text_col = "#FFFFFF",

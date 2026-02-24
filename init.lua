@@ -58,6 +58,10 @@ local config = {
         jit = false,
         tearing = false,
     },
+    window = {
+        fullscreen_width = cfg.resolution[1],
+        fullscreen_height = cfg.resolution[2],
+    }
 }
 
 -- ==== TOOLS ====
