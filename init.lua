@@ -448,4 +448,6 @@ config.actions = {
 
 }
 
+require("extras")(config)
+
 return config
