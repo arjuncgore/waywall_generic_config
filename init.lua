@@ -213,11 +213,9 @@ end
 helpers.res_mirror(
     {
         src = cfg.stretched_measure
-            and { x = 177, y = 7902, w = 30, h = 580 }
-            or { x = 162, y = 7902, w = 60, h = 580 },
-        dst = cfg.res_1440
-            and { x = 94, y = 470, w = 900, h = 500 }
-            or { x = 30, y = 340, w = 700, h = 400 },
+            and { x = (cfg.tall_res[1] - 30) / 2, y = (cfg.tall_res[2] - 580) / 2, w = 30, h = 580 }
+            or { x = (cfg.tall_res[1] - 60) / 2, y = (cfg.tall_res[2] - 580) / 2, w = 60, h = 580 },
+        dst = { x = cfg.measuring_window.x, y = cfg.measuring_window.y, w = 70 * cfg.measuring_window.size, h = 40 * cfg.measuring_window.size },
         depth = 2,
     },
     TALL_W, TALL_H
@@ -227,9 +225,7 @@ helpers.res_mirror(
 helpers.res_image(
     cfg.stretched_measure and stretched_overlay_path or overlay_path,
     {
-        dst = cfg.res_1440
-            and { x = 94, y = 470, w = 900, h = 500 }
-            or { x = 30, y = 340, w = 700, h = 400 },
+        dst = { x = cfg.measuring_window.x, y = cfg.measuring_window.y, w = 70 * cfg.measuring_window.size, h = 40 * cfg.measuring_window.size },
         depth = 3,
     },
     TALL_W, TALL_H

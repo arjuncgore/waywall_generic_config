@@ -27,6 +27,7 @@ return {
     tall_pie = { enabled = true, x = 1200, y = 400, size = 4, colorkey = false }, -- Leave same as thin for seamlessness
     tall_percent = { enabled = false, x = 1300, y = 850, size = 6 },              -- Leave same as thin for seamlessness
 
+    measuring_window = { enabled = true, x = 30, y = 340, size = 10 },
     stretched_measure = false,
 
 
