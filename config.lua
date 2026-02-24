@@ -20,6 +20,12 @@ return {
     ninbot_opacity = 1,        -- 0 to 1
 
 
+    -- ==== ALTERNATIVE RESOLUTIONS ====
+    thin_res = { 340, 1080 },
+    wide_res = { 1920, 300 },
+    tall_res = { 384, 16384 },
+
+
     -- ==== MIRRORS ====
     e_count = { enabled = true, x = 1340, y = 300, size = 5, colorkey = false },
     thin_pie = { enabled = true, x = 1200, y = 400, size = 4, colorkey = false }, -- Turning off colorkeying also maintains the original pie chart's dimensions and shows the percentages

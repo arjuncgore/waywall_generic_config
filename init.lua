@@ -92,11 +92,6 @@ local percentage_colors = {
     { input = "#45CB65", output = cfg.text_col }
 }
 
--- resolutions
-local THIN_W, THIN_H = (cfg.res_1440 and 350 or 340), (cfg.res_1440 and 1100 or 1080)
-local WIDE_W, WIDE_H = (cfg.res_1440 and 2560 or 1920), (cfg.res_1440 and 400 or 300)
-local TALL_W, TALL_H = 384, 16384
-
 -- thin mirrors
 if cfg.e_count.enabled then
     helpers.res_mirror(
@@ -109,7 +104,7 @@ if cfg.e_count.enabled then
                 output = cfg.text_col,
             } or nil,
         },
-        THIN_W, THIN_H
+        cfg.thin_res[1], cfg.thin_res[2]
     )
     helpers.res_mirror(
         {
@@ -121,7 +116,7 @@ if cfg.e_count.enabled then
                 output = cfg.text_col,
             } or nil,
         },
-        TALL_W, TALL_H
+        cfg.tall_res[1], cfg.tall_res[2]
     )
 end
 
@@ -135,7 +130,7 @@ if cfg.thin_pie.enabled then
                     depth = 2,
                     color_key = ck,
                 },
-                THIN_W, THIN_H
+                cfg.thin_res[1], cfg.thin_res[2]
             )
         end
     else
@@ -145,7 +140,7 @@ if cfg.thin_pie.enabled then
                 dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 273 * cfg.thin_pie.size / 4 },
                 depth = 2,
             },
-            THIN_W, THIN_H
+            cfg.thin_res[1], cfg.thin_res[2]
         )
     end
 end
@@ -159,7 +154,7 @@ if cfg.thin_percent.enabled then
                 depth = 3,
                 color_key = ck,
             },
-            THIN_W, THIN_H
+            cfg.thin_res[1], cfg.thin_res[2]
         )
     end
 end
@@ -175,7 +170,7 @@ if cfg.tall_pie.enabled then
                     depth = 2,
                     color_key = ck,
                 },
-                TALL_W, TALL_H
+                cfg.tall_res[1], cfg.tall_res[2]
             )
         end
     else
@@ -185,7 +180,7 @@ if cfg.tall_pie.enabled then
                 dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 273 * cfg.tall_pie.size / 4 },
                 depth = 2,
             },
-            TALL_W, TALL_H
+            cfg.tall_res[1], cfg.tall_res[2]
         )
     end
 end
@@ -199,7 +194,7 @@ if cfg.tall_percent.enabled then
                 depth = 3,
                 color_key = ck,
             },
-            TALL_W, TALL_H
+            cfg.tall_res[1], cfg.tall_res[2]
         )
     end
 end
@@ -212,7 +207,7 @@ helpers.res_mirror(
         dst = { x = cfg.measuring_window.x, y = cfg.measuring_window.y, w = 70 * cfg.measuring_window.size, h = 40 * cfg.measuring_window.size },
         depth = 2,
     },
-    TALL_W, TALL_H
+    cfg.tall_res[1], cfg.tall_res[2]
 )
 
 -- ==== IMAGES ====
@@ -222,37 +217,31 @@ helpers.res_image(
         dst = { x = cfg.measuring_window.x, y = cfg.measuring_window.y, w = 70 * cfg.measuring_window.size, h = 40 * cfg.measuring_window.size },
         depth = 3,
     },
-    TALL_W, TALL_H
+    cfg.tall_res[1], cfg.tall_res[2]
 )
 helpers.res_image(
     tall_overlay_path,
     {
-        dst = cfg.res_1440
-            and { x = 0, y = 0, w = 2560, h = 1440 }
-            or { x = 0, y = 0, w = 1920, h = 1080 },
+        dst = { x = 0, y = 0, w = cfg.resolution[1], h = cfg.resolution[2] },
         depth = 1,
     },
-    TALL_W, TALL_H
+    cfg.tall_res[1], cfg.tall_res[2]
 )
 helpers.res_image(
     wide_overlay_path,
     {
-        dst = cfg.res_1440
-            and { x = 0, y = 0, w = 2560, h = 1440 }
-            or { x = 0, y = 0, w = 1920, h = 1080 },
+        dst = { x = 0, y = 0, w = cfg.resolution[1], h = cfg.resolution[2] },
         depth = 1,
     },
-    WIDE_W, WIDE_H
+    cfg.wide_res[1], cfg.wide_res[2]
 )
 helpers.res_image(
     thin_overlay_path,
     {
-        dst = cfg.res_1440
-            and { x = 0, y = 0, w = 2560, h = 1440 }
-            or { x = 0, y = 0, w = 1920, h = 1080 },
+        dst = { x = 0, y = 0, w = cfg.resolution[1], h = cfg.resolution[2] },
         depth = 1,
     },
-    THIN_W, THIN_H
+    cfg.thin_res[1], cfg.thin_res[2]
 )
 
 -- ==== DEBUG TEXT ====
@@ -319,9 +308,9 @@ local make_res = function(width, height, enable, disable)
 end
 
 local resolutions = {
-    thin = make_res(THIN_W, THIN_H, thin_enable, res_disable),
-    tall = make_res(TALL_W, TALL_H, tall_enable, res_disable),
-    wide = make_res(WIDE_W, WIDE_H, wide_enable, res_disable),
+    thin = make_res(cfg.thin_res[1], cfg.thin_res[2], thin_enable, res_disable),
+    tall = make_res(cfg.tall_res[1], cfg.tall_res[2], tall_enable, res_disable),
+    wide = make_res(cfg.wide_res[1], cfg.wide_res[2], wide_enable, res_disable),
 }
 
 local function resize_helper(mode, run, ingame_only)
