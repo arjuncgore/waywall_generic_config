@@ -28,10 +28,14 @@ return {
 
     -- ==== MIRRORS ====
     e_count = { enabled = true, x = 1340, y = 300, size = 5, colorkey = false },
+
     thin_pie = { enabled = true, x = 1200, y = 400, size = 4, colorkey = false }, -- Turning off colorkeying also maintains the original pie chart's dimensions and shows the percentages
-    thin_percent = { enabled = false, x = 1300, y = 850, size = 6 },
     tall_pie = { enabled = true, x = 1200, y = 400, size = 4, colorkey = false }, -- Leave same as thin for seamlessness
-    tall_percent = { enabled = false, x = 1300, y = 850, size = 6 },              -- Leave same as thin for seamlessness
+
+    thin_percent = { enabled = false, x = 1300, y = 850, size = 6 },
+    tall_percent = { enabled = false, x = 1300, y = 850, size = 6 }, -- Leave same as thin for seamlessness
+    percentages_match_text = false,                                  -- Enabling this makes the percentages match the text color rather than the pie colors
+
 
     measuring_window = { enabled = true, x = 30, y = 340, size = 10 },
     stretched_measure = false,

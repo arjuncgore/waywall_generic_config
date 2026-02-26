@@ -88,8 +88,8 @@ local pie_colors = {
     { input = "#E446C4", output = cfg.pie_chart_3 }
 }
 local percentage_colors = {
-    { input = "#E96D4D", output = cfg.text_col },
-    { input = "#45CB65", output = cfg.text_col }
+    { input = "#E96D4D", output = cfg.percentages_match_text and cfg.text_col or cfg.pie_chart_1 },
+    { input = "#45CB65", output = cfg.percentages_match_text and cfg.text_col or cfg.pie_chart_2 },
 }
 
 -- thin mirrors
