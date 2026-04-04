@@ -59,7 +59,6 @@ If you have a 1440p monitor, add this argument to the clone command `-b 1440`
 - Use the `normal_kb` table if you want any remaps to stay in chat mode, or leave it empty
 
 5. Miscellaneous
-- If you're using a 1440p monitor, make sure res_1440 is true. Make sure you change the positioning of the mirrors if you're transitioning from 1080p to 1440p or visa versa
 - If you setup boat eye as per the [guide](https://its-saanvi.github.io/linux-mcsr/minecraft/wayland/boat-eye.html), set your waywall sens coefficients here
 - If you wish to use Char's [Resize Animations](https://github.com/char3210/resize_animation/blob/main/resize_animation_waywall.py), set `enable_resize_animations` to true and follow the steps to setup OBS at the top of the python script.
 
