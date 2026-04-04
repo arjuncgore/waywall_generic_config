@@ -68,7 +68,6 @@ return {
 
 
     -- ==== MISC ====
-    res_1440 = false,
     sens_change = { enabled = false, normal = 1.0, tall = 0.1 }, -- make sure raw input is off
     enable_resize_animations = false,
 
