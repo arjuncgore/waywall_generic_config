@@ -412,6 +412,7 @@ config.actions = {
             "Toggle Ninbot = " .. cfg.toggle_ninbot_key .. "\n" ..
             "Launch paceman = " .. cfg.launch_paceman_key .. "\n" ..
             "Fullscreen = " .. cfg.toggle_fullscreen_key .. "\n" ..
+            "Chat Mode = " .. cfg.toggle_remaps_keZ. .. "\n" ..
             "  "
 
 
