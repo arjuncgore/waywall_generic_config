@@ -1,4 +1,4 @@
-# Waywall-generic-config
+# waywall_generic_config
 
 ## Features:
 - Configurable colors for mirrors and background
