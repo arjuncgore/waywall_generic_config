@@ -1,5 +1,9 @@
 -- ==== WAYWALL GENERIC CONFIG ====
-return {
+local main = require("main")
+
+local remaps = require("remaps")
+
+local cfg = {
     debug_text = true,
 
     -- ==== LOOKS ====
@@ -72,3 +76,5 @@ return {
     enable_resize_animations = false,
 
 }
+
+return main(cfg, remaps)
