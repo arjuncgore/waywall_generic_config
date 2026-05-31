@@ -412,10 +412,7 @@ return function(cfg, remaps)
                 "Toggle Ninbot = " .. cfg.toggle_ninbot_key .. "\n" ..
                 "Launch paceman = " .. cfg.launch_paceman_key .. "\n" ..
                 "Fullscreen = " .. cfg.toggle_fullscreen_key .. "\n" ..
-                "Chat Mode = " .. cfg.toggle_remaps_key .. "\n" ..
-                "  "
-
-
+                "Chat Mode = " .. cfg.toggle_remaps_key .. "\n"
                 ,
                 { x = 10, y = 10, color = "#FFFFFF", size = 3 })
             if debug_text1 and debug_text2 and debug_text3 and debug_text4 then

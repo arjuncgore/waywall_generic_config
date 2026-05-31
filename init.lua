@@ -41,7 +41,7 @@ local cfg = {
     percentages_match_text = false,                                  -- Enabling this makes the percentages match the text color rather than the pie colors
 
 
-    measuring_window = { enabled = true, x = 30, y = 340, size = 10 },
+    measuring_window = { x = 30, y = 340, size = 10 },
     stretched_measure = false,
 
 
