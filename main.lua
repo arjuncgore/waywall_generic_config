@@ -26,7 +26,7 @@ local debug_text4 = nil
 local debug_text = "Press Shift + I to show keybinds.\n\n" ..
     "Look at the Github's README for a guide to config.\n\n" ..
     "disable this message by setting\n" ..
-    "\'debug_text\' to false in ~/.config/waywall/config.lua\n"
+    "\'debug_text\' to false in ~/.config/waywall/init.lua\n"
 
 -- ==== CONFIG TABLE ====
 

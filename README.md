@@ -59,7 +59,7 @@ If you have a 1440p monitor, add this argument to the clone command `-b 1440`
 
 5. Keyboard
 - Use the `xkb_config` options by setting `enabled` to true. You can disable any specific field by setting it to nil
-- You can up any text you wish to show while in chat mode, and if you don't want any, change text to `""` (I would recommend keeping some text so you have some sort of indicator)
+- You can set any text you wish to show while in chat mode, and if you don't want any, change text to `""` (I would recommend keeping some text so you have some sort of indicator)
 - Set your remaps in `remaps.lua` in the `remapped_kb` table. Refer to [this](https://github.com/tesselslate/waywall/blob/main/include/util/keycodes.h) for the key codes for remaps
 - Use the `normal_kb` table if you want any remaps to stay in chat mode, or leave it empty
 
