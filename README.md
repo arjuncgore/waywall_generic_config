@@ -46,6 +46,7 @@ If you have a 1440p monitor, add this argument to the clone command `-b 1440`
 - Turn mirrors on/off with the `enabled` option
 - Set the position and size with `x`, `y`, and `size`
 - Enable `colorkey` to hide the background, change your pie chart into a circle, and change the colors to the colors at the top of `init.lua`
+- Include a c counter mirror with the e counter by setting `show_c` to true in the `e_count` mirror config (also shows the labels)
 - Use a stretched measuring window by enabling `stretched_measure`. Generate your own stretched overlay using [qMaxXen's overlay generator](https://qmaxxen.github.io/overlay-gen/more-options/) and set the Overlay width to 30. (be sure to rename it to `stretched_overlay.png` and replace the old one in `resources/`)
 
 4. Macros
