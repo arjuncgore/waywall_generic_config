@@ -28,22 +28,27 @@ This clones this repository directly to your waywall config folder
 If you have a 1440p monitor, add this argument to the clone command `-b 1440`
 
 ## Configuration:
-> IMPORTANT: Don't edit the code in `init.lua` unless you know what you're doing, you should only edit `config.lua` and `remaps.lua`
+> IMPORTANT: Don't edit the code in `main.lua` unless you know what you're doing, you should only edit `init.lua` and `remaps.lua`, add additional code to `extras.lua`
 1. Looks
 - You can set the colors for your background and mirrors
     - `text_col` impacts both the thin/tall percentages and e counter when colorkey is on
     - `pie_chart_1`, `pie_chart_2`, and `pie_chart_3` correspond to the orange, green, and purple sections respectively.
 - Use a custom background image by replacing `resources/background.png` with your background of choice, and set `toggle_bg_picture` to true
-- Use custom overlays over your resolutions (eg. borders) by replacing `resources/overlay_{thin, tall, wide}` with images of your choice
+- Use custom overlays over your resolutions (eg. borders) by replacing `resources/overlay_{thin, tall, wide}.png` with images of your choice
 - Set your Ninjabrain Bot's position by anchoring it to a corner or edge and offsetting using the x and y values
 
-2. Mirrors
+2. Alternative Resolutions
+- Change the height and width your thin/wide/tall alternatives here
+- For boat eye, you shouldn't change the height of your tall resolution, keep it at 16384
+- Do not keep multiple resolutions that are larger than your monitor's bounds, it's only legal to have a single one that does this, usually used for measuring eyes.
+
+3. Mirrors
 - Turn mirrors on/off with the `enabled` option
 - Set the position and size with `x`, `y`, and `size`
-- Enable `colorkey` to hide the background, change your pie chart into a circle, and change the colors to the colors at the top of `config.lua`
+- Enable `colorkey` to hide the background, change your pie chart into a circle, and change the colors to the colors at the top of `init.lua`
 - Use a stretched measuring window by enabling `stretched_measure`. Generate your own stretched overlay using [qMaxXen's overlay generator](https://qmaxxen.github.io/overlay-gen/more-options/) and set the Overlay width to 30. (be sure to rename it to `stretched_overlay.png` and replace the old one in `resources/`)
 
-3. Keybinds
+4. Macros
 - Refer to [this](https://github.com/xkbcommon/libxkbcommon/blob/master/include/xkbcommon/xkbcommon-keysyms.h) for your key's code, and [this](https://tesselslate.github.io/waywall/03_lookup_tables.html#modifiers) for any modifiers
 - Having `*-` before a key allows the action to active while other keys are also pressed
 - Choose whether resolution changes activate while F3 is held with `f3_safe` (useful if you set B or F to a hotkey, but you still need to toggle hitboxes or change render)
@@ -52,13 +57,13 @@ If you have a 1440p monitor, add this argument to the clone command `-b 1440`
 - `toggle_ninbot_key` is how you can show/hide Ninjabrain Bot, the visibility option built in won't work in Waywall
 - `toggle_remaps_key` enables chat mode and toggles your keyboard layout and remaps off and on
 
-4. Keyboard
+5. Keyboard
 - Use the `xkb_config` options by setting `enabled` to true. You can disable any specific field by setting it to nil
-- You can up any text you wish to show while in chat mode, and if you don't want any, change text to "" (I would recommend keeping some text so you know if you've accidentally turned your remaps and keyboard layout off)
-- Set your remaps in `remaps_lua` in the `remapped_kb` table. Refer to [this](https://github.com/tesselslate/waywall/blob/main/include/util/keycodes.h) for the key codes for remaps
+- You can up any text you wish to show while in chat mode, and if you don't want any, change text to `""` (I would recommend keeping some text so you have some sort of indicator)
+- Set your remaps in `remaps.lua` in the `remapped_kb` table. Refer to [this](https://github.com/tesselslate/waywall/blob/main/include/util/keycodes.h) for the key codes for remaps
 - Use the `normal_kb` table if you want any remaps to stay in chat mode, or leave it empty
 
-5. Miscellaneous
+6. Miscellaneous
 - If you setup boat eye as per the [guide](https://its-saanvi.github.io/linux-mcsr/minecraft/wayland/boat-eye.html), set your waywall sens coefficients here
 - If you wish to use Char's [Resize Animations](https://github.com/char3210/resize_animation/blob/main/resize_animation_waywall.py), set `enable_resize_animations` to true and follow the steps to setup OBS at the top of the python script.
 

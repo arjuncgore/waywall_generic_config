@@ -45,7 +45,7 @@ local cfg = {
     stretched_measure = false,
 
 
-    -- ==== KEYBINDS ====
+    -- ==== MACROS ====
     -- resolution changes
     thin = { key = "*-Alt_L", f3_safe = false, ingame_only = true },
     wide = { key = "*-B", f3_safe = true, ingame_only = true },
