@@ -92,12 +92,15 @@ return function(cfg, remaps)
         { input = "#45CB65", output = cfg.percentages_match_text and cfg.text_col or cfg.pie_chart_2 },
     }
 
-    -- thin mirrors
     if cfg.e_count.enabled then
         helpers.res_mirror(
             {
-                src = { x = 13, y = 37, w = 37, h = 9 },
-                dst = { x = cfg.e_count.x, y = cfg.e_count.y, w = 37 * cfg.e_count.size, h = 9 * cfg.e_count.size },
+                src = cfg.e_count.show_c
+                    and { x = 1, y = 28, w = 49, h = 18 }
+                    or { x = 13, y = 37, w = 37, h = 9 },
+                dst = cfg.e_count.show_c
+                    and { x = cfg.e_count.x, y = cfg.e_count.y, w = 49 * cfg.e_count.size, h = 18 * cfg.e_count.size }
+                    or { x = cfg.e_count.x, y = cfg.e_count.y, w = 37 * cfg.e_count.size, h = 9 * cfg.e_count.size },
                 depth = 2,
                 color_key = cfg.e_count.colorkey and {
                     input = "#DDDDDD",
@@ -108,8 +111,12 @@ return function(cfg, remaps)
         )
         helpers.res_mirror(
             {
-                src = { x = 13, y = 37, w = 37, h = 9 },
-                dst = { x = cfg.e_count.x, y = cfg.e_count.y, w = 37 * cfg.e_count.size, h = 9 * cfg.e_count.size },
+                src = cfg.e_count.show_c
+                    and { x = 1, y = 28, w = 49, h = 18 }
+                    or { x = 13, y = 37, w = 37, h = 9 },
+                dst = cfg.e_count.show_c
+                    and { x = cfg.e_count.x, y = cfg.e_count.y, w = 49 * cfg.e_count.size, h = 18 * cfg.e_count.size }
+                    or { x = cfg.e_count.x, y = cfg.e_count.y, w = 37 * cfg.e_count.size, h = 9 * cfg.e_count.size },
                 depth = 2,
                 color_key = cfg.e_count.colorkey and {
                     input = "#DDDDDD",
@@ -120,6 +127,7 @@ return function(cfg, remaps)
         )
     end
 
+    -- thin mirrors
     if cfg.thin_pie.enabled then
         if cfg.thin_pie.colorkey then
             for _, ck in ipairs(pie_colors) do
