@@ -77,6 +77,13 @@ return function(cfg, remaps)
         handle:close()
         return result ~= nil
     end
+    function set_sens (sens)
+        if cfg.sens_change.raw_input then
+            waywall.exec("maccel set param sens_mult " .. sens)
+        else
+            waywall.set_sensitivity(sens)
+        end
+    end
 
     -- ==== MIRRORS ====
     -- colors
@@ -270,24 +277,24 @@ return function(cfg, remaps)
     local thin_enable = function()
         thin_active = true
         if cfg.sens_change.enabled then
-            waywall.set_sensitivity(cfg.sens_change.normal)
+            set_sens(cfg.sens_change.normal)
         end
     end
     local tall_enable = function()
         if cfg.sens_change.enabled and not thin_active then
-            waywall.set_sensitivity(cfg.sens_change.tall)
+            set_sens(cfg.sens_change.tall)
         end
         thin_active = false
     end
     local wide_enable = function()
         if cfg.sens_change.enabled then
-            waywall.set_sensitivity(cfg.sens_change.normal)
+            set_sens(cfg.sens_change.normal)
         end
         thin_active = false
     end
     local res_disable = function()
         if cfg.sens_change.enabled then
-            waywall.set_sensitivity(cfg.sens_change.normal)
+            set_sens(cfg.sens_change.normal)
         end
         thin_active = false
     end

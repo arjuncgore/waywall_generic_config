@@ -72,7 +72,7 @@ local cfg = {
 
 
     -- ==== MISC ====
-    sens_change = { enabled = false, normal = 1.0, tall = 0.1 }, -- make sure raw input is off
+    sens_change = { enabled = false, normal = 1.0, tall = 0.1, raw_input = false }, -- if you have raw input on, set this option to true
     enable_resize_animations = false,
 
 }
