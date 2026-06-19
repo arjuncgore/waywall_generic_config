@@ -72,7 +72,7 @@ local cfg = {
 
 
     -- ==== MISC ====
-    sens_change = { enabled = false, normal = 1.0, tall = 0.1, raw_input = false }, -- if you have raw input on, set this option to true
+    sens_change = { enabled = false, normal = 1.0, tall = 0.1, raw_input = false }, -- setting raw_input to true will enable sens changing via maccel
     enable_resize_animations = false,
 
 }
