@@ -77,7 +77,7 @@ return function(cfg, remaps)
         handle:close()
         return result ~= nil
     end
-    function set_sens (sens)
+    local set_sens = function(sens)
         if cfg.sens_change.raw_input then
             waywall.exec("maccel set param sens_mult " .. sens)
         else
