@@ -65,7 +65,7 @@ If you have a 1440p monitor, add this argument to the clone command `-b 1440`
 - Use the `normal_kb` table if you want any remaps to stay in chat mode, or leave it empty
 
 6. Miscellaneous
-- If you setup boat eye as per the [guide](https://its-saanvi.github.io/linux-mcsr/minecraft/wayland/boat-eye.html), set your waywall sens coefficients here
+- If you setup boat eye as per the [guide](https://its-saanvi.github.io/linux-mcsr/minecraft/wayland/boat-eye.html), set your waywall sens coefficients here, if you have raw input set to on in your minecraft configuration, set the raw_input setting in input.lua to on (this alternative method requires [maccel](maccel.org) to be installed)
 - If you wish to use Char's [Resize Animations](https://github.com/char3210/resize_animation/blob/main/resize_animation_waywall.py), set `enable_resize_animations` to true and follow the steps to setup OBS at the top of the python script.
 
 
