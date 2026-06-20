@@ -7,7 +7,7 @@ local cfg = {
     debug_text = true,
 
     -- ==== LOOKS ====
-    resolution = { 1920, 1080 },
+    resolution = { 2560, 1440 },
 
     bg_col = "#000000",
     toggle_bg_picture = false,
@@ -25,23 +25,23 @@ local cfg = {
 
 
     -- ==== ALTERNATIVE RESOLUTIONS ====
-    thin_res = { 340, 1080 },
-    wide_res = { 1920, 300 },
+    thin_res = { 400, 1440 },
+    wide_res = { 2560, 400 },
     tall_res = { 384, 16384 },
 
 
     -- ==== MIRRORS ====
-    e_count = { enabled = true, x = 1340, y = 300, size = 5, colorkey = false, show_c = false },
+    e_count = { enabled = true, x = 1500, y = 400, size = 5, colorkey = false, show_c = false },
 
-    thin_pie = { enabled = true, x = 1200, y = 400, size = 4, colorkey = false }, -- Turning off colorkeying also maintains the original pie chart's dimensions and shows the percentages
-    tall_pie = { enabled = true, x = 1200, y = 400, size = 4, colorkey = false }, -- Leave same as thin for seamlessness
+    thin_pie = { enabled = true, x = 1495, y = 645, size = 4, colorkey = false }, -- Turning off colorkeying also maintains the original pie chart's dimensions and shows the percentages
+    tall_pie = { enabled = true, x = 1495, y = 645, size = 4, colorkey = false }, -- Leave same as thin for seamlessness
 
-    thin_percent = { enabled = false, x = 1300, y = 850, size = 6 },
-    tall_percent = { enabled = false, x = 1300, y = 850, size = 6 }, -- Leave same as thin for seamlessness
-    percentages_match_text = false,                                  -- Enabling this makes the percentages match the text color rather than the pie colors
+    thin_percent = { enabled = false, x = 1568, y = 1050, size = 6 },
+    tall_percent = { enabled = false, x = 1568, y = 1050, size = 6 }, -- Leave same as thin for seamlessness
+    percentages_match_text = false,                                   -- Enabling this makes the percentages match the text color rather than the pie colors
 
 
-    measuring_window = { x = 30, y = 340, size = 10 },
+    measuring_window = { x = 30, y = 340, size = 14 },
     stretched_measure = false,
 
 
