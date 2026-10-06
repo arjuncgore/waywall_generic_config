@@ -61,8 +61,7 @@ If you have a 1440p monitor, add this argument to the clone command `-b 1440`
 5. Keyboard
 - Use the `xkb_config` options by setting `enabled` to true. You can disable any specific field by setting it to nil
 - You can set any text you wish to show while in chat mode, and if you don't want any, change text to `""` (I would recommend keeping some text so you have some sort of indicator)
-- Set your remaps in `remaps.lua` in the `remapped_kb` table. Refer to [this](https://github.com/tesselslate/waywall/blob/main/include/util/keycodes.h) for the key codes for remaps
-- Use the `normal_kb` table if you want any remaps to stay in chat mode, or leave it empty
+- Set your remaps in the lua table in`remaps.lua`. Refer to [this](https://github.com/tesselslate/waywall/blob/main/include/util/keycodes.h) for the key codes for remaps
 
 6. Miscellaneous
 - If you setup boat eye as per the [guide](https://its-saanvi.github.io/linux-mcsr/minecraft/wayland/boat-eye.html), set your waywall sens coefficients here, if you have raw input set to on in your minecraft configuration, set the raw_input setting in input.lua to on (this alternative method requires [maccel](maccel.org) to be installed)
