@@ -31,8 +31,6 @@ local debug_text = "Press Shift + I to show keybinds.\n\n" ..
 -- ==== CONFIG TABLE ====
 
 return function(cfg, remaps)
-    local keyboard_remaps = remaps.remapped_kb
-    local other_remaps = remaps.normal_kb
 
     local config = {
         input = {
@@ -43,7 +41,7 @@ return function(cfg, remaps)
 
             repeat_rate = 40,
             repeat_delay = 300,
-            remaps = keyboard_remaps,
+            remaps = remaps,
             sensitivity = (cfg.sens_change.enabled and cfg.sens_change.normal) or 1.0,
             confine_pointer = false,
         },
@@ -380,7 +378,7 @@ return function(cfg, remaps)
             end
             if remaps_active then
                 remaps_active = false
-                waywall.set_remaps(other_remaps)
+                waywall.set_remaps({})
 
                 if cfg.xkb_config.enabled then
                     waywall.set_keymap({
@@ -400,7 +398,7 @@ return function(cfg, remaps)
                     })
             else
                 remaps_active = true
-                waywall.set_remaps(keyboard_remaps)
+                waywall.set_remaps(remaps)
 
                 if cfg.xkb_config.enabled then
                     waywall.set_keymap({
