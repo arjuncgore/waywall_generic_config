@@ -82,9 +82,74 @@ return function(cfg, remaps)
             waywall.set_sensitivity(sens)
         end
     end
+    local read_file = function(name)
+        local file = io.open(waywall_config_path .. name, "r")
+        if file then
+            local data = file:read("*a")
+            file:close()
+            return data
+        else
+            print("Error: File \"" .. name .. "\" not found.")
+            return
+        end
+    end
+    local hex_to_vec = function(var, hex)
+        hex = hex:match("^%s*(.-)%s*$")
+        hex = hex:gsub("^#", "")
+        hex = hex:lower()
+
+        local hex_segs = {}
+        for pair in hex:gmatch("%x%x") do
+            table.insert(hex_segs, pair)
+        end
+        if #hex_segs == 3 then
+            table.insert(hex_segs, "ff")
+        end
+
+        local r = tonumber(hex_segs[1], 16) / 255
+        local g = tonumber(hex_segs[2], 16) / 255
+        local b = tonumber(hex_segs[3], 16) / 255
+        local a = tonumber(hex_segs[4], 16) / 255
+
+        return "const vec4 " .. var .. " = vec4(" .. r .. ", " .. g .. ", " .. b .. ", " .. a .. ");"
+    end
+
+
+    local compile_colors = function(colors)
+        local output = "precision highp float;\n\n"
+
+        for name, hex in pairs(colors) do
+            output = output .. hex_to_vec(name, hex) .. "\n\n"
+        end
+
+        return output
+    end
 
     -- ==== MIRRORS ====
     -- colors
+    if cfg.use_shaders then
+        local shader_colors = {
+            text_color = cfg.text_col,
+            pie1_color = cfg.pie_chart_1,
+            pie2_color = cfg.pie_chart_2,
+            pie3_color = cfg.pie_chart_3,
+        }
+
+        config.shaders = {
+            ["text"] = {
+                vertex   = read_file("shaders/general.vert"),
+                fragment = compile_colors(shader_colors) .. read_file("shaders/text.frag"),
+            },
+            ["pie_chart"] = {
+                vertex   = read_file("shaders/general.vert"),
+                fragment = compile_colors(shader_colors) .. read_file("shaders/pie_chart.frag"),
+            },
+            ["percentages"] = {
+                vertex   = read_file("shaders/general.vert"),
+                fragment = compile_colors(shader_colors) .. read_file("shaders/percentages.frag"),
+            },
+        }
+    end
     local pie_colors = {
         { input = "#EC6E4E", output = cfg.pie_chart_1 },
         { input = "#46CE66", output = cfg.pie_chart_2 },
@@ -107,10 +172,11 @@ return function(cfg, remaps)
                     and { x = cfg.e_count.x, y = cfg.e_count.y, w = 49 * cfg.e_count.size, h = 18 * cfg.e_count.size }
                     or { x = cfg.e_count.x, y = cfg.e_count.y, w = 37 * cfg.e_count.size, h = 9 * cfg.e_count.size },
                 depth = 2,
-                color_key = cfg.e_count.colorkey and {
+                color_key = (cfg.e_count.colorkey and not cfg.use_shaders) and {
                     input = "#DDDDDD",
                     output = cfg.text_col,
                 } or nil,
+                shader = (cfg.e_count.colorkey and cfg.use_shaders) and "text" or nil,
             },
             cfg.thin_res[1], cfg.thin_res[2]
         )
@@ -123,10 +189,11 @@ return function(cfg, remaps)
                     and { x = cfg.e_count.x, y = cfg.e_count.y, w = 49 * cfg.e_count.size, h = 18 * cfg.e_count.size }
                     or { x = cfg.e_count.x, y = cfg.e_count.y, w = 37 * cfg.e_count.size, h = 9 * cfg.e_count.size },
                 depth = 2,
-                color_key = cfg.e_count.colorkey and {
+                color_key = (cfg.e_count.colorkey and not cfg.use_shaders) and {
                     input = "#DDDDDD",
                     output = cfg.text_col,
                 } or nil,
+                shader = (cfg.e_count.colorkey and cfg.use_shaders) and "text" or nil,
             },
             cfg.tall_res[1], cfg.tall_res[2]
         )
@@ -135,16 +202,28 @@ return function(cfg, remaps)
     -- thin mirrors
     if cfg.thin_pie.enabled then
         if cfg.thin_pie.colorkey then
-            for _, ck in ipairs(pie_colors) do
+            if cfg.use_shaders then
                 helpers.res_mirror(
                     {
                         src = { x = cfg.thin_res[1] - 340, y = cfg.thin_res[2] - 406, w = 340, h = 178 },
                         dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 423 * cfg.thin_pie.size / 4 },
                         depth = 2,
-                        color_key = ck,
+                        shader = "pie_chart",
                     },
                     cfg.thin_res[1], cfg.thin_res[2]
                 )
+            else
+                for _, ck in ipairs(pie_colors) do
+                    helpers.res_mirror(
+                        {
+                            src = { x = cfg.thin_res[1] - 340, y = cfg.thin_res[2] - 406, w = 340, h = 178 },
+                            dst = { x = cfg.thin_pie.x, y = cfg.thin_pie.y, w = 420 * cfg.thin_pie.size / 4, h = 423 * cfg.thin_pie.size / 4 },
+                            depth = 2,
+                            color_key = ck,
+                        },
+                        cfg.thin_res[1], cfg.thin_res[2]
+                    )
+                end
             end
         else
             helpers.res_mirror(
@@ -159,32 +238,56 @@ return function(cfg, remaps)
     end
 
     if cfg.thin_percent.enabled then
-        for _, ck in ipairs(percentage_colors) do
+        if cfg.use_shaders then
             helpers.res_mirror(
                 {
                     src = { x = cfg.thin_res[1] - 93, y = cfg.thin_res[2] - 221, w = 33, h = 25 },
                     dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
                     depth = 3,
-                    color_key = ck,
+                    shader = cfg.percentages_match_text and "text" or "percentages",
                 },
                 cfg.thin_res[1], cfg.thin_res[2]
             )
+        else
+            for _, ck in ipairs(percentage_colors) do
+                helpers.res_mirror(
+                    {
+                        src = { x = cfg.thin_res[1] - 93, y = cfg.thin_res[2] - 221, w = 33, h = 25 },
+                        dst = { x = cfg.thin_percent.x, y = cfg.thin_percent.y, w = 33 * cfg.thin_percent.size, h = 25 * cfg.thin_percent.size },
+                        depth = 3,
+                        color_key = ck,
+                    },
+                    cfg.thin_res[1], cfg.thin_res[2]
+                )
+            end
         end
     end
 
     -- tall mirrors
     if cfg.tall_pie.enabled then
         if cfg.tall_pie.colorkey then
-            for _, ck in ipairs(pie_colors) do
+            if cfg.use_shaders then
                 helpers.res_mirror(
                     {
                         src = { x = 44, y = 15978, w = 340, h = 178 },
                         dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
                         depth = 2,
-                        color_key = ck,
+                        shader = "pie_chart",
                     },
                     cfg.tall_res[1], cfg.tall_res[2]
                 )
+            else
+                for _, ck in ipairs(pie_colors) do
+                    helpers.res_mirror(
+                        {
+                            src = { x = 44, y = 15978, w = 340, h = 178 },
+                            dst = { x = cfg.tall_pie.x, y = cfg.tall_pie.y, w = 420 * cfg.tall_pie.size / 4, h = 423 * cfg.tall_pie.size / 4 },
+                            depth = 2,
+                            color_key = ck,
+                        },
+                        cfg.tall_res[1], cfg.tall_res[2]
+                    )
+                end
             end
         else
             helpers.res_mirror(
@@ -199,16 +302,28 @@ return function(cfg, remaps)
     end
 
     if cfg.tall_percent.enabled then
-        for _, ck in ipairs(percentage_colors) do
+        if cfg.use_shaders then
             helpers.res_mirror(
                 {
                     src = { x = 291, y = 16163, w = 33, h = 25 },
                     dst = { x = cfg.tall_percent.x, y = cfg.tall_percent.y, w = 33 * cfg.tall_percent.size, h = 25 * cfg.tall_percent.size },
                     depth = 3,
-                    color_key = ck,
+                    shader = cfg.percentages_match_text and "text" or "percentages",
                 },
                 cfg.tall_res[1], cfg.tall_res[2]
             )
+        else
+            for _, ck in ipairs(percentage_colors) do
+                helpers.res_mirror(
+                    {
+                        src = { x = 291, y = 16163, w = 33, h = 25 },
+                        dst = { x = cfg.tall_percent.x, y = cfg.tall_percent.y, w = 33 * cfg.tall_percent.size, h = 25 * cfg.tall_percent.size },
+                        depth = 3,
+                        color_key = ck,
+                    },
+                    cfg.tall_res[1], cfg.tall_res[2]
+                )
+            end
         end
     end
 

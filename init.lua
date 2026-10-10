@@ -44,6 +44,8 @@ local cfg = {
     measuring_window = { x = 30, y = 340, size = 10 },
     stretched_measure = false,
 
+    use_shaders = false, -- Only applies to mirrors with colorkey enabled
+
 
     -- ==== MACROS ====
     -- resolution changes
