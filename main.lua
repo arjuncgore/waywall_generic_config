@@ -344,6 +344,17 @@ return function(cfg, remaps)
         return resize
     end
 
+    local function chat_mode_helper(body)
+        return function()
+             if remaps_active then
+                body()
+                return true
+            else
+                return false
+            end
+        end
+    end
+
     -- ==== KEYBINDS ====
     config.actions = {
 
@@ -351,25 +362,25 @@ return function(cfg, remaps)
         [cfg.wide.key] = resize_helper(cfg.wide, resolutions.wide, cfg.wide.ingame_only),
         [cfg.tall.key] = resize_helper(cfg.tall, resolutions.tall, cfg.tall.ingame_only),
 
-        [cfg.toggle_fullscreen_key] = waywall.toggle_fullscreen,
+        [cfg.toggle_fullscreen_key] = chat_mode_helper(waywall.toggle_fullscreen),
 
-        [cfg.launch_paceman_key] = function()
+        [cfg.launch_paceman_key] = chat_mode_helper(function()
             if is_pacem_running() then
                 print("Paceman Already Running")
             else
                 waywall.exec("java -jar " .. pacem_path .. " --nogui")
                 print("Paceman Running")
             end
-        end,
+        end),
 
-        [cfg.toggle_ninbot_key] = function()
+        [cfg.toggle_ninbot_key] = chat_mode_helper(function()
             if not is_ninb_running() then
                 waywall.exec("java -Dawt.useSystemAAFontSettings=on -jar " .. nb_path)
                 waywall.show_floating(true)
             else
                 helpers.toggle_floating()
             end
-        end,
+        end),
 
         [cfg.toggle_remaps_key] = function()
             if rebind_text then
