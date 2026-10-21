@@ -31,7 +31,6 @@ local debug_text = "Press Shift + I to show keybinds.\n\n" ..
 -- ==== CONFIG TABLE ====
 
 return function(cfg, remaps)
-
     local config = {
         input = {
             layout = (cfg.xkb_config.enabled and cfg.xkb_config.layout) or nil,
@@ -324,16 +323,22 @@ return function(cfg, remaps)
         wide = make_res(cfg.wide_res[1], cfg.wide_res[2], wide_enable, res_disable),
     }
 
-    local function resize_helper(mode, run, ingame_only)
-        local resize = function()
+    local function chat_mode_helper(body)
+        return function()
             if not remaps_active then
                 return false
             end
+            return body()
+        end
+    end
+
+    local function resize_helper(mode, run, ingame_only)
+        local resize = chat_mode_helper(function()
             if mode.f3_safe and waywall.get_key("F3") then
                 return false
             end
             return run()
-        end
+        end)
 
         if ingame_only then
             return helpers.ingame_only(resize)
@@ -349,25 +354,25 @@ return function(cfg, remaps)
         [cfg.wide.key] = resize_helper(cfg.wide, resolutions.wide, cfg.wide.ingame_only),
         [cfg.tall.key] = resize_helper(cfg.tall, resolutions.tall, cfg.tall.ingame_only),
 
-        [cfg.toggle_fullscreen_key] = waywall.toggle_fullscreen,
+        [cfg.toggle_fullscreen_key] = chat_mode_helper(waywall.toggle_fullscreen),
 
-        [cfg.launch_paceman_key] = function()
+        [cfg.launch_paceman_key] = chat_mode_helper(function()
             if is_pacem_running() then
                 print("Paceman Already Running")
             else
                 waywall.exec("java -jar " .. pacem_path .. " --nogui")
                 print("Paceman Running")
             end
-        end,
+        end),
 
-        [cfg.toggle_ninbot_key] = function()
+        [cfg.toggle_ninbot_key] = chat_mode_helper(function()
             if not is_ninb_running() then
                 waywall.exec("java -Dawt.useSystemAAFontSettings=on -jar " .. nb_path)
                 waywall.show_floating(true)
             else
                 helpers.toggle_floating()
             end
-        end,
+        end),
 
         [cfg.toggle_remaps_key] = function()
             if rebind_text then
@@ -409,7 +414,7 @@ return function(cfg, remaps)
             end
         end,
 
-        ["Shift-I"] = function()
+        ["Shift-I"] = chat_mode_helper(function()
             if keybinds_text then
                 keybinds_text:close()
                 keybinds_text = nil
@@ -436,7 +441,7 @@ return function(cfg, remaps)
                 debug_text4:close()
                 debug_text4 = nil
             end
-        end
+        end),
 
     }
 
