@@ -137,18 +137,21 @@ return function(cfg, remaps)
             pie3_color = cfg.pie_chart_3,
         }
 
+        local compiled_colors = compile_colors(shader_colors)
+        local general_vertex = read_file("shaders/general.vert")
+
         config.shaders = {
             ["text"] = {
-                vertex   = read_file("shaders/general.vert"),
-                fragment = compile_colors(shader_colors) .. read_file("shaders/text.frag"),
+                vertex   = general_vertex,
+                fragment = compiled_colors .. read_file("shaders/text.frag"),
             },
             ["pie_chart"] = {
-                vertex   = read_file("shaders/general.vert"),
-                fragment = compile_colors(shader_colors) .. read_file("shaders/pie_chart.frag"),
+                vertex   = general_vertex,
+                fragment = compiled_colors .. read_file("shaders/pie_chart.frag"),
             },
             ["percentages"] = {
-                vertex   = read_file("shaders/general.vert"),
-                fragment = compile_colors(shader_colors) .. read_file("shaders/percentages.frag"),
+                vertex   = general_vertex,
+                fragment = compiled_colors .. read_file("shaders/percentages.frag"),
             },
         }
     end
