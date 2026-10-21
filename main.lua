@@ -76,10 +76,8 @@ return function(cfg, remaps)
         return result ~= nil
     end
     local set_sens = function(sens)
-        if cfg.sens_change.raw_input then
-            waywall.exec("maccel set param sens_mult " .. sens)
-        else
             waywall.set_sensitivity(sens)
+            waywall.set_raw_sensitivity(sens)
         end
     end
 
