@@ -31,7 +31,6 @@ local debug_text = "Press Shift + I to show keybinds.\n\n" ..
 -- ==== CONFIG TABLE ====
 
 return function(cfg, remaps)
-
     local config = {
         input = {
             layout = (cfg.xkb_config.enabled and cfg.xkb_config.layout) or nil,
@@ -326,33 +325,28 @@ return function(cfg, remaps)
         wide = make_res(cfg.wide_res[1], cfg.wide_res[2], wide_enable, res_disable),
     }
 
-    local function resize_helper(mode, run, ingame_only)
-        local resize = function()
+    local function chat_mode_helper(body)
+        return function()
             if not remaps_active then
                 return false
             end
+            return body()
+        end
+    end
+
+    local function resize_helper(mode, run, ingame_only)
+        local resize = chat_mode_helper(function()
             if mode.f3_safe and waywall.get_key("F3") then
                 return false
             end
             return run()
-        end
+        end)
 
         if ingame_only then
             return helpers.ingame_only(resize)
         end
 
         return resize
-    end
-
-    local function chat_mode_helper(body)
-        return function()
-             if remaps_active then
-                body()
-                return true
-            else
-                return false
-            end
-        end
     end
 
     -- ==== KEYBINDS ====
@@ -422,7 +416,7 @@ return function(cfg, remaps)
             end
         end,
 
-        ["Shift-I"] = function()
+        ["Shift-I"] = chat_mode_helper(function()
             if keybinds_text then
                 keybinds_text:close()
                 keybinds_text = nil
@@ -449,7 +443,7 @@ return function(cfg, remaps)
                 debug_text4:close()
                 debug_text4 = nil
             end
-        end
+        end),
 
     }
 
