@@ -17,6 +17,7 @@ local stretched_overlay_path = waywall_config_path .. "resources/stretched_overl
 -- ==== INITS ====
 local remaps_active = true
 local rebind_text = nil
+local paceman_text = nil
 local thin_active = false
 local keybinds_text = nil
 local debug_text1 = nil
@@ -474,11 +475,22 @@ return function(cfg, remaps)
         [cfg.toggle_fullscreen_key] = chat_mode_helper(waywall.toggle_fullscreen),
 
         [cfg.launch_paceman_key] = chat_mode_helper(function()
+            if paceman_text then return end
             if is_pacem_running() then
                 print("Paceman Already Running")
+                paceman_text = waywall.text("Paceman Already Running",
+                    { x = 10, y = cfg.resolution[2], color = "#FFFFFF", size = 3 })
+                waywall.sleep(1500)
+                paceman_text:close()
+                paceman_text = nil
             else
                 waywall.exec("java -jar " .. pacem_path .. " --nogui")
                 print("Paceman Running")
+                paceman_text = waywall.text("Paceman Running",
+                    { x = 10, y = cfg.resolution[2], color = "#FFFFFF", size = 3 })
+                waywall.sleep(1500)
+                paceman_text:close()
+                paceman_text = nil
             end
         end),
 
