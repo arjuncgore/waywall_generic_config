@@ -479,7 +479,7 @@ return function(cfg, remaps)
             if is_pacem_running() then
                 print("Paceman Already Running")
                 paceman_text = waywall.text("Paceman Already Running",
-                    { x = 10, y = cfg.resolution[2], color = "#FFFFFF", size = 3 })
+                    { x = 10, y = cfg.resolution[2] - 50, color = "#FFFFFF", size = 3 })
                 waywall.sleep(1500)
                 paceman_text:close()
                 paceman_text = nil
@@ -487,7 +487,7 @@ return function(cfg, remaps)
                 waywall.exec("java -jar " .. pacem_path .. " --nogui")
                 print("Paceman Running")
                 paceman_text = waywall.text("Paceman Running",
-                    { x = 10, y = cfg.resolution[2], color = "#FFFFFF", size = 3 })
+                    { x = 10, y = cfg.resolution[2] - 50, color = "#FFFFFF", size = 3 })
                 waywall.sleep(1500)
                 paceman_text:close()
                 paceman_text = nil
