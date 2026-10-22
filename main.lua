@@ -75,9 +75,8 @@ return function(cfg, remaps)
         return result ~= nil
     end
     local set_sens = function(sens)
-            waywall.set_sensitivity(sens)
-            waywall.set_raw_sensitivity(sens)
-        end
+        waywall.set_sensitivity(sens)
+        waywall.set_raw_sensitivity(sens)
     end
     local read_file = function(name)
         local file = io.open(waywall_config_path .. name, "r")
