@@ -497,6 +497,7 @@ return function(cfg, remaps)
         [cfg.toggle_ninbot_key] = chat_mode_helper(function()
             if not is_ninb_running() then
                 waywall.exec("java -Dawt.useSystemAAFontSettings=on -jar " .. nb_path)
+                print("Ninbot launched in waywall")
                 waywall.show_floating(true)
             else
                 helpers.toggle_floating()
